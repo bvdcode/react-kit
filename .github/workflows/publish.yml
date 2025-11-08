@@ -38,9 +38,13 @@ jobs:
         uses: GitTools/actions/gitversion/execute@v4
 
       - run: npm version ${{ steps.gitversion.outputs.majorMinorPatch }} --no-git-tag-version
+        working-directory: ./src/package
       - run: npm ci
+        working-directory: ./src/package
       - run: npm run build
+        working-directory: ./src/package
       - run: npm publish --provenance --access public
+        working-directory: ./src/package
 
       - run: |
           git config user.name "$GITHUB_ACTOR"
