@@ -37,7 +37,7 @@ jobs:
       - id: gitversion
         uses: GitTools/actions/gitversion/execute@v4
 
-      - run: npm version ${{ steps.gitversion.outputs.semVer }} --no-git-tag-version
+      - run: npm version ${{ steps.gitversion.outputs.majorMinorPatch }} --no-git-tag-version
       - run: npm ci
       - run: npm run build
       - run: npm publish --provenance --access public
@@ -45,10 +45,10 @@ jobs:
       - run: |
           git config user.name "$GITHUB_ACTOR"
           git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
-          git tag v${{ steps.gitversion.outputs.semVer }}
-          git push origin v${{ steps.gitversion.outputs.semVer }}
+          git tag v${{ steps.gitversion.outputs.majorMinorPatch  }}
+          git push origin v${{ steps.gitversion.outputs.majorMinorPatch }}
 
       - uses: softprops/action-gh-release@v2
         with:
-          tag_name: v${{ steps.gitversion.outputs.semVer }}
+          tag_name: v${{ steps.gitversion.outputs.majorMinorPatch }}
           generate_release_notes: true
