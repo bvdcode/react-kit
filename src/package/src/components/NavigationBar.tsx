@@ -35,13 +35,11 @@ const NavigationBar: FunctionComponent<ReactKitProps> = ({
         }}
       >
         <Box
-          bgcolor="blue"
           display="flex"
           alignItems="center"
           justifyContent="flex-start"
           gap={1}
           onClick={() => navigate("/")}
-          minWidth={0}
           sx={{ cursor: "pointer" }}
         >
           <Avatar src={logoUrl} alt={appName} />
@@ -57,7 +55,6 @@ const NavigationBar: FunctionComponent<ReactKitProps> = ({
           </Typography>
         </Box>
         <Box
-          bgcolor="red"
           sx={{ display: "flex", justifyContent: "center", minWidth: 0, px: 1 }}
         >
           <Tabs
@@ -77,12 +74,7 @@ const NavigationBar: FunctionComponent<ReactKitProps> = ({
             ))}
           </Tabs>
         </Box>
-        <Box
-          bgcolor="yellow"
-          display="flex"
-          alignItems="center"
-          justifyContent="flex-end"
-        >
+        <Box display="flex" alignItems="center" justifyContent="flex-end">
           <ThemeToggle />
         </Box>
       </Toolbar>
