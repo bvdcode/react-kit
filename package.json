@@ -1,7 +1,7 @@
 {
   "name": "@bvdcode/react-kit",
   "version": "0.1.0",
-  "description": "Lightweight wrapper for React apps providing All-in-One frontend solution.",
+  "description": "React application toolkit: pages-driven routing, layout, auth gating; foundation for future UI, state and data modules.",
   "keywords": [
     "react",
     "router",
@@ -20,23 +20,22 @@
   "homepage": "https://github.com/bvdcode/react-kit#readme",
   "type": "module",
   "main": "dist/index.cjs",
-  "module": "dist/index.mjs",
+  "module": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
     "dist"
   ],
   "exports": {
     ".": {
-      "import": "./dist/index.mjs",
+      "import": "./dist/index.js",
       "require": "./dist/index.cjs"
     }
   },
   "sideEffects": false,
   "scripts": {
-    "build": "tsup src/index.ts --dts --format cjs,esm --minify",
+    "build": "tsup src/index.ts --dts --format cjs,esm --minify --clean",
     "dev": "tsup src/index.ts --dts --format cjs,esm --watch",
-    "prepare": "npm run build",
-    "clean": "rimraf dist"
+    "prepare": "npm run build"
   },
   "peerDependencies": {
     "react": ">=18",

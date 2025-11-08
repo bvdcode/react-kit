@@ -1,5 +1,5 @@
 import React from "react";
-import type { ReactKitProps, ReactKitPage } from "../types";
+import type { ReactKitProps, ReactKitPage } from "./types";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 function DefaultLayout({
@@ -45,7 +45,7 @@ function DefaultLayout({
   );
 }
 
-export const RouterKit: React.FC<ReactKitProps> = ({
+export const AppShell: React.FC<ReactKitProps> = ({
   pages,
   basename,
   isAuthenticated = false,
@@ -82,4 +82,4 @@ export const RouterKit: React.FC<ReactKitProps> = ({
   );
 };
 
-export default RouterKit;
+export default AppShell;

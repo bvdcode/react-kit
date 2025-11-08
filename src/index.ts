@@ -1,2 +1,2 @@
 export * from "./types";
-export * from "./router/RouterKit";
+export * from "./AppShell";
