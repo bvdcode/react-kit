@@ -48,7 +48,7 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Publish to npm (Trusted Publishing)
+      - name: Publish to npm
         run: npm publish --provenance
 
       - name: Create GitHub Release
