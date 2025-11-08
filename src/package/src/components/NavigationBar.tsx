@@ -42,11 +42,20 @@ const NavigationBar: FunctionComponent<ReactKitProps> = ({
           sx={{ cursor: "pointer", minWidth: 0 }}
         >
           <Avatar src={logoUrl} alt={appName} />
-          <Typography variant="h6" component="div" noWrap>
+          <Typography
+            variant="h6"
+            component="div"
+            noWrap
+            sx={{
+              display: { xs: "none", sm: "block" },
+            }}
+          >
             {appName}
           </Typography>
         </Box>
-        <Box sx={{ display: "flex", justifyContent: "center", minWidth: 0 }}>
+        <Box
+          sx={{ display: "flex", justifyContent: "center", minWidth: 0, px: 1 }}
+        >
           <Tabs
             value={currentTab !== -1 ? currentTab : false}
             textColor="inherit"
