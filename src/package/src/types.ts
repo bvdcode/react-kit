@@ -1,11 +1,11 @@
-import type { ComponentType, ReactNode } from "react";
+import type { ReactNode } from "react";
 
 export type ReactKitPage = {
   route: string;
   name?: string;
   icon?: ReactNode;
   protected?: boolean;
-  component: ComponentType;
+  component: Element;
 };
 
 export type ReactKitProps = {
