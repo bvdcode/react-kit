@@ -14,6 +14,8 @@ function App() {
           component: <div>About Page</div>,
         },
       ]}
+      appName={"React Kit"}
+      navigationPosition={"top"}
     />
   );
 }
