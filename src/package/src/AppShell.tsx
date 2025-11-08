@@ -4,7 +4,7 @@ import "react-toastify/dist/ReactToastify.css";
 import AppLayout from "./components/AppLayout";
 
 export const AppShell: React.FC<ReactKitProps> = (props) => {
-  return <AppLayout {...props}></AppLayout>;
+  return <AppLayout {...props} />;
 };
 
 export default AppShell;
