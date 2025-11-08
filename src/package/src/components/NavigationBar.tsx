@@ -30,13 +30,19 @@ const NavigationBar: FunctionComponent<ReactKitProps> = ({
     return (
       <AppBar position="static">
         <Toolbar>
-          <Typography variant="h6" component="div" sx={{ mr: 4 }}>
+          <Typography
+            variant="h6"
+            component="div"
+            sx={{ flexShrink: 0, mr: 2 }}
+          >
             {appName}
           </Typography>
           <Tabs
             value={currentTab !== -1 ? currentTab : false}
             textColor="inherit"
             indicatorColor="secondary"
+            variant="scrollable"
+            scrollButtons="auto"
           >
             {pages.map((page) => (
               <Tab
