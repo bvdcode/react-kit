@@ -26,17 +26,20 @@ jobs:
           node-version: "lts/*"
           registry-url: "https://registry.npmjs.org"
 
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.x"
+
       - uses: GitTools/actions/gitversion/setup@v4
         with:
-          versionSpec: latest
+          versionSpec: "6.x"
+
       - id: gitversion
         uses: GitTools/actions/gitversion/execute@v4
 
       - run: npm version ${{ steps.gitversion.outputs.semVer }} --no-git-tag-version
-
       - run: npm ci
       - run: npm run build
-
       - run: npm publish --provenance --access public
 
       - run: |
