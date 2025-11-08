@@ -31,6 +31,10 @@
       "require": "./dist/index.cjs"
     }
   },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
   "sideEffects": false,
   "scripts": {
     "build": "tsup src/index.ts --dts --format cjs,esm --minify --clean",
