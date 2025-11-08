@@ -16,22 +16,9 @@ const AppLayout: FunctionComponent<ReactKitProps> = (props) => {
         height="100%"
         flexDirection={isVerticalNav ? "row" : "column"}
       >
-        <NavigationBar
-          pages={props.pages}
-          orientation={isVerticalNav ? "vertical" : "horizontal"}
-          appName={props.appName}
-        />
+        <NavigationBar {...props} />
 
-        <Box
-          component="main"
-          sx={{
-            p: {
-              xs: 1,
-              sm: 2,
-              md: 3,
-            },
-          }}
-        >
+        <Box component="main" sx={{ flex: 1, overflow: "auto", p: 3 }}>
           <Routes>
             {props.pages.map((page) => {
               const element = page.protected ? (
