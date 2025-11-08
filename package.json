@@ -24,10 +24,10 @@
     "type": "git",
     "url": "https://github.com/bvdcode/react-kit"
   },
-  "dependencies": {
-    "react": "^19.1.1",
-    "react-dom": "^19.1.1",
-    "react-router-dom": "^7.9.5"
+  "peerDependencies": {
+    "react": ">=18",
+    "react-dom": ">=18",
+    "react-router-dom": ">=7"
   },
   "devDependencies": {
     "@types/react": "^19.2.2",
