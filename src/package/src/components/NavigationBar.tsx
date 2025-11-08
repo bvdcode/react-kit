@@ -11,9 +11,9 @@ import {
   ListItemText,
   ListItemButton,
 } from "@mui/material";
+import { ReactKitProps } from "../types";
 import { FunctionComponent } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { ReactKitPage, ReactKitProps } from "../types";
 
 const NavigationBar: FunctionComponent<ReactKitProps> = ({
   pages,
