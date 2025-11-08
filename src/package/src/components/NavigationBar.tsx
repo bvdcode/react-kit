@@ -33,20 +33,16 @@ const NavigationBar: FunctionComponent<ReactKitProps> = ({
 
     return (
       <AppBar position="static">
-        <Toolbar>
+        <Toolbar sx={{ gap: 2, userSelect: "none" }}>
           <Box
             display="flex"
             alignItems="center"
             gap={1}
             onClick={() => navigate("/")}
-            sx={{ cursor: "pointer" }}
+            sx={{ cursor: "pointer", flexShrink: 0 }}
           >
             <Avatar src={logoUrl} alt={appName} />
-            <Typography
-              variant="h6"
-              component="div"
-              sx={{ flexShrink: 0, mr: 1 }}
-            >
+            <Typography variant="h6" component="div" noWrap>
               {appName}
             </Typography>
           </Box>
@@ -56,6 +52,7 @@ const NavigationBar: FunctionComponent<ReactKitProps> = ({
             indicatorColor="secondary"
             variant="scrollable"
             scrollButtons="auto"
+            sx={{ flexGrow: 1, minWidth: 0 }}
             onChange={(_, value) => {
               if (value !== false) {
                 navigate(pages[value].route);
@@ -72,17 +69,31 @@ const NavigationBar: FunctionComponent<ReactKitProps> = ({
   }
 
   return (
-    <Drawer variant="permanent" anchor="left">
+    <Drawer
+      variant="permanent"
+      anchor="left"
+      sx={{
+        width: 240,
+        flexShrink: 0,
+        "& .MuiDrawer-paper": {
+          width: 240,
+          boxSizing: "border-box",
+        },
+      }}
+    >
       <Toolbar>
-        <Typography
-          variant="h6"
-          noWrap
-          component="div"
+        <Box
+          display="flex"
+          alignItems="center"
+          gap={1}
           onClick={() => navigate("/")}
-          sx={{ cursor: "pointer" }}
+          sx={{ cursor: "pointer", userSelect: "none" }}
         >
-          {appName}
-        </Typography>
+          {logoUrl && <Avatar src={logoUrl} alt={appName} />}
+          <Typography variant="h6" noWrap component="div">
+            {appName}
+          </Typography>
+        </Box>
       </Toolbar>
       <List>
         {pages.map((page) => {
