@@ -40,10 +40,19 @@ jobs:
         run: npm ci
 
       - name: Set package.json version from GitVersion
+        id: setversion
+        shell: bash
         run: |
-          VERSION="${{ steps.gitversion.outputs.semVer }}"
-          echo "Using version: $VERSION"
-          npm version "$VERSION" --no-git-tag-version
+          CURRENT=$(node -p "require('./package.json').version")
+          TARGET="${{ steps.gitversion.outputs.semVer }}"
+          echo "Current: $CURRENT, GitVersion: $TARGET"
+          if [ "$TARGET" = "$CURRENT" ]; then
+            echo "Version unchanged; bumping patch"
+            TARGET=$(node -p "const v=require('./package.json').version.split('.').map(Number); v[2]++; v.join('.')")
+          fi
+          echo "Using version: $TARGET"
+          echo "final_version=$TARGET" >> $GITHUB_OUTPUT
+          npm version "$TARGET" --no-git-tag-version
 
       - name: Build
         run: npm run build
@@ -54,7 +63,7 @@ jobs:
       - name: Create GitHub Release
         uses: ncipollo/release-action@v1
         with:
-          tag: v${{ steps.gitversion.outputs.semVer }}
-          name: v${{ steps.gitversion.outputs.semVer }}
+          tag: v${{ steps.setversion.outputs.final_version }}
+          name: v${{ steps.setversion.outputs.final_version }}
           generateReleaseNotes: true
           makeLatest: true
