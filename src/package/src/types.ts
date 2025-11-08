@@ -10,6 +10,7 @@ export type ReactKitPage = {
 
 export type ReactKitProps = {
   appName: string;
+  logoUrl?: string;
   basename?: string;
   pages: ReactKitPage[];
   navigationPosition: "top" | "side";

@@ -40,6 +40,9 @@ const App = () => {
       }}
     >
       <AppShell
+        logoUrl={"https://reactjs.org/logo-og.png"}
+        navigationPosition={navigationPosition}
+        appName="React Kit"
         pages={[
           {
             route: "/",
@@ -85,8 +88,6 @@ const App = () => {
             icon: <div>🔒</div>,
           },
         ]}
-        appName="React Kit"
-        navigationPosition={navigationPosition}
       />
     </div>
   );
