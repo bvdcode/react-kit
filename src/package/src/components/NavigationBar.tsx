@@ -1,7 +1,9 @@
 import {
+  Box,
   Tab,
   Tabs,
   List,
+  Avatar,
   AppBar,
   Drawer,
   Toolbar,
@@ -17,8 +19,9 @@ import { Link, useLocation } from "react-router-dom";
 
 const NavigationBar: FunctionComponent<ReactKitProps> = ({
   pages,
-  navigationPosition,
+  logoUrl,
   appName,
+  navigationPosition,
 }) => {
   const location = useLocation();
 
@@ -30,13 +33,16 @@ const NavigationBar: FunctionComponent<ReactKitProps> = ({
     return (
       <AppBar position="static">
         <Toolbar>
-          <Typography
-            variant="h6"
-            component="div"
-            sx={{ flexShrink: 0, mr: 2 }}
-          >
-            {appName}
-          </Typography>
+          <Box display="flex" alignItems="center" gap={1}>
+            <Avatar src={logoUrl} alt={appName} />
+            <Typography
+              variant="h6"
+              component="div"
+              sx={{ flexShrink: 0, mr: 2 }}
+            >
+              {appName}
+            </Typography>
+          </Box>
           <Tabs
             value={currentTab !== -1 ? currentTab : false}
             textColor="inherit"
