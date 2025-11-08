@@ -6,7 +6,13 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 const AppLayout: FunctionComponent<ReactKitProps> = (props) => {
   return (
-    <Box display="flex" width="100%" height="100%" bgcolor="red">
+    <Box
+      display="flex"
+      width="100%"
+      height="100%"
+      bgcolor="red"
+      flexDirection={props.navigationPosition === "top" ? "column" : "row"}
+    >
       <Box component="nav">{props.appName}</Box>
       <Box component="main">
         <BrowserRouter basename={props.basename}>
