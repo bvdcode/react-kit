@@ -4,15 +4,13 @@ export type ReactKitPage = {
   route: string;
   name?: string;
   icon?: ReactNode;
-  protected?: boolean;
   component: Element;
+  protected?: boolean;
 };
 
 export type ReactKitProps = {
+  appName: string;
   basename?: string;
-  redirectPath?: string;
   pages: ReactKitPage[];
-  isAuthenticated?: boolean;
-  notFoundElement?: ReactNode;
-  layout?: (children: ReactNode, pages: ReactKitPage[]) => ReactNode;
+  navigationPosition: "top" | "side";
 };
