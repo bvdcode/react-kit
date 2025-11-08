@@ -20,6 +20,10 @@
   "publishConfig": {
     "access": "public"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bvdcode/react-kit"
+  },
   "dependencies": {
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
