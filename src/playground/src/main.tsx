@@ -1,34 +1,7 @@
-import { useState } from "react";
 import { createRoot } from "react-dom/client";
 import { AppShell } from "@bvdcode/react-kit/AppShell";
-import { Button, ButtonGroup, Box } from "@mui/material";
 
 const App = () => {
-  const [navigationPosition, setNavigationPosition] = useState<"top" | "side">(
-    "top",
-  );
-
-  const SettingsPage = () => (
-    <Box>
-      <h2>Settings</h2>
-      <p>Switch navigation layout:</p>
-      <ButtonGroup variant="contained">
-        <Button
-          onClick={() => setNavigationPosition("top")}
-          color={navigationPosition === "top" ? "primary" : "inherit"}
-        >
-          Top Navigation
-        </Button>
-        <Button
-          onClick={() => setNavigationPosition("side")}
-          color={navigationPosition === "side" ? "primary" : "inherit"}
-        >
-          Side Navigation
-        </Button>
-      </ButtonGroup>
-    </Box>
-  );
-
   return (
     <div
       style={{
@@ -41,7 +14,6 @@ const App = () => {
     >
       <AppShell
         logoUrl={"https://reactjs.org/logo-og.png"}
-        navigationPosition={navigationPosition}
         appName="React Kit"
         pages={[
           {
@@ -77,7 +49,7 @@ const App = () => {
           {
             route: "/settings",
             name: "Settings",
-            component: <SettingsPage />,
+            component: <div>Settings Page Content</div>,
             icon: <div>⚙️</div>,
           },
           {

@@ -13,5 +13,4 @@ export type ReactKitProps = {
   logoUrl?: string;
   basename?: string;
   pages: ReactKitPage[];
-  navigationPosition: "top" | "side";
 };
