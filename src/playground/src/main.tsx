@@ -1,9 +1,8 @@
-import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { AppShell } from "../../package/src/AppShell";
 
 createRoot(document.getElementById("root")!).render(
-  <StrictMode>
+  <div style={{ height: "100vh", width: "100vw" }}>
     <AppShell
       pages={[
         {
@@ -18,5 +17,5 @@ createRoot(document.getElementById("root")!).render(
       appName={"React Kit"}
       navigationPosition={"top"}
     />
-  </StrictMode>,
+  </div>,
 );

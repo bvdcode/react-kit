@@ -1,12 +1,12 @@
 import { Box } from "@mui/material";
 import { FunctionComponent } from "react";
 import ProtectedContent from "./ProtectedContent";
-import { ReactKitPage, ReactKitProps } from "../types";
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { ReactKitProps } from "../types";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 const AppLayout: FunctionComponent<ReactKitProps> = (props) => {
   return (
-    <Box>
+    <Box display="flex" width="100%" height="100%" borderColor="red">
       <Box component="nav">{props.appName}</Box>
       <Box component="main">
         <BrowserRouter basename={props.basename}>
