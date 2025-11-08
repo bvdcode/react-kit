@@ -54,6 +54,24 @@ const App = () => {
             icon: <div>ℹ️</div>,
           },
           {
+            route: "/contact",
+            name: "Contact",
+            component: <div>Contact Page Content</div>,
+            icon: <div>📞</div>,
+          },
+          {
+            route: "/work",
+            name: "Work",
+            component: <div>Work Page Content</div>,
+            icon: <div>💼</div>,
+          },
+          {
+            route: "/blog",
+            name: "Blog",
+            component: <div>Blog Page Content</div>,
+            icon: <div>📝</div>,
+          },
+          {
             route: "/settings",
             name: "Settings",
             component: <SettingsPage />,
