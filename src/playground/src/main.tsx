@@ -1,9 +1,8 @@
-import React from "react";
 import { createRoot } from "react-dom/client";
 import { AppShell } from "@bvdcode/react-kit/AppShell";
 
 createRoot(document.getElementById("root")!).render(
-  <div style={{ height: "100vh", width: "100vw", backgroundColor: "blue" }}>
+  <div style={{ height: "100vh", width: "100vw", backgroundColor: "yellow" }}>
     <AppShell
       pages={[
         {
