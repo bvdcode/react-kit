@@ -1,6 +1,5 @@
 {
   "name": "@bvdcode/react-kit",
-  "version": "0.1.0",
   "description": "React application toolkit: pages-driven routing, layout, auth gating; foundation for future UI, state and data modules.",
   "keywords": [
     "react",
