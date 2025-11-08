@@ -1,100 +1,51 @@
-name: Build and publish to npm
+name: publish
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
     paths:
       - "src/**"
       - "package.json"
-  workflow_dispatch:
+      - "tsconfig.json"
+      - ".github/workflows/publish.yml"
 
 permissions:
   contents: write
   id-token: write
 
 jobs:
-  build:
+  npm-publish:
     runs-on: ubuntu-latest
-    outputs:
-      Version: ${{ steps.gitversion.outputs.SemVer }}
-      CommitsSinceVersionSource: ${{ steps.gitversion.outputs.CommitsSinceVersionSource }}
-
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
-      - name: Install GitVersion
-        uses: gittools/actions/gitversion/setup@v0.10.2
+      - uses: actions/setup-node@v4
         with:
-          versionSpec: "5.x"
-
-      - name: Determine Version
-        id: gitversion
-        uses: gittools/actions/gitversion/execute@v0.10.2
-
-      - name: Display GitVersion outputs
-        run: |
-          echo "Version: ${{ steps.gitversion.outputs.SemVer }}"
-          echo "CommitsSinceVersionSource: ${{ steps.gitversion.outputs.CommitsSinceVersionSource }}"
-
-      - name: Use Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 25.1.0
-          registry-url: "https://registry.npmjs.org"
-          cache: "npm"
-
-      - name: Install deps
-        run: npm ci
-
-      - name: Update package.json version
-        run: npm version ${{ steps.gitversion.outputs.SemVer }} --no-git-tag-version
-
-      - name: Build
-        run: npm run build
-
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: dist
-          path: dist
-
-  release:
-    runs-on: ubuntu-latest
-    needs: build
-    if: github.ref == 'refs/heads/main'
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Download build artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: dist
-          path: dist
-
-      - name: Use Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 25.1.0
+          node-version: "lts/*"
           registry-url: "https://registry.npmjs.org"
 
-      - name: Update package.json version for publish
-        run: npm version ${{ needs.build.outputs.Version }} --no-git-tag-version
-
-      - name: Publish to npm
-        if: needs.build.outputs.CommitsSinceVersionSource > 0
-        run: npm publish --provenance
-
-      - name: Create GitHub Release
-        if: needs.build.outputs.CommitsSinceVersionSource > 0
-        uses: ncipollo/release-action@v1
+      - uses: GitTools/actions/gitversion/setup@v4
         with:
-          tag: v${{ needs.build.outputs.Version }}
-          name: Release v${{ needs.build.outputs.Version }}
-          generateReleaseNotes: true
-          makeLatest: true
+          versionSpec: latest
+      - id: gitversion
+        uses: GitTools/actions/gitversion/execute@v4
+
+      - run: npm version ${{ steps.gitversion.outputs.semVer }} --no-git-tag-version
+
+      - run: npm ci
+      - run: npm run build
+
+      - run: npm publish --provenance --access public
+
+      - run: |
+          git config user.name "$GITHUB_ACTOR"
+          git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+          git tag v${{ steps.gitversion.outputs.semVer }}
+          git push origin v${{ steps.gitversion.outputs.semVer }}
+
+      - uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.gitversion.outputs.semVer }}
+          generate_release_notes: true
