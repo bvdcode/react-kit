@@ -2,7 +2,16 @@ import { createRoot } from "react-dom/client";
 import { AppShell } from "@bvdcode/react-kit/AppShell";
 
 createRoot(document.getElementById("root")!).render(
-  <div style={{ height: "100vh", width: "100vw", backgroundColor: "yellow" }}>
+  <div
+    style={{
+      position: "absolute",
+      top: 0,
+      left: 0,
+      height: "100%",
+      width: "100%",
+      backgroundColor: "green",
+    }}
+  >
     <AppShell
       pages={[
         {
