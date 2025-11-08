@@ -6,16 +6,9 @@ import ProtectedContent from "./ProtectedContent";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 const AppLayout: FunctionComponent<ReactKitProps> = (props) => {
-  const isVerticalNav = props.navigationPosition === "side";
-
   return (
     <BrowserRouter basename={props.basename}>
-      <Box
-        display="flex"
-        width="100%"
-        height="100%"
-        flexDirection={isVerticalNav ? "row" : "column"}
-      >
+      <Box display="flex" width="100%" height="100%" flexDirection="column">
         <NavigationBar {...props} />
 
         <Box component="main" sx={{ flex: 1, overflow: "auto", p: 3 }}>

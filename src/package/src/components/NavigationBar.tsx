@@ -14,8 +14,9 @@ import {
   ListItemButton,
 } from "@mui/material";
 import { ReactKitProps } from "../types";
-import { FunctionComponent } from "react";
+import { Menu as MenuIcon } from "@mui/icons-material";
 import { useLocation, useNavigate } from "react-router-dom";
+import { Fragment, FunctionComponent, useState } from "react";
 
 const NavigationBar: FunctionComponent<ReactKitProps> = ({
   pages,
@@ -25,6 +26,7 @@ const NavigationBar: FunctionComponent<ReactKitProps> = ({
 }) => {
   const location = useLocation();
   const navigate = useNavigate();
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   if (navigationPosition === "top") {
     const currentTab = pages.findIndex(
@@ -68,25 +70,49 @@ const NavigationBar: FunctionComponent<ReactKitProps> = ({
     );
   }
 
+  const handlePageNavigation = (route: string) => {
+    navigate(route);
+    setMobileOpen(false);
+  };
+
   return (
-    <Drawer
-      variant="permanent"
-      anchor="left"
-      sx={{
-        width: 240,
-        flexShrink: 0,
-        "& .MuiDrawer-paper": {
+    <Fragment>
+      <AppBar position="static">
+        <Toolbar>
+          <Box
+            display="flex"
+            alignItems="center"
+            gap={1}
+            onClick={() => setMobileOpen(!mobileOpen)}
+            sx={{ cursor: "pointer", userSelect: "none" }}
+          >
+          {logoUrl && <Avatar src={logoUrl} alt={appName} />}
+            <Typography variant="h6" noWrap component="div">
+              {appName}
+            </Typography>
+            <MenuIcon />
+          </Box>
+        </Toolbar>
+      </AppBar>
+      <Drawer
+        variant="temporary"
+        anchor="left"
+        open={mobileOpen}
+        onClose={() => setMobileOpen(false)}
+        sx={{
           width: 240,
-          boxSizing: "border-box",
-        },
-      }}
-    >
-      <Toolbar>
+          flexShrink: 0,
+          "& .MuiDrawer-paper": {
+            width: 240,
+            boxSizing: "border-box",
+          },
+        }}
+      >
         <Box
           display="flex"
           alignItems="center"
-          gap={1}
-          onClick={() => navigate("/")}
+          padding={2}
+          gap={2}
           sx={{ cursor: "pointer", userSelect: "none" }}
         >
           {logoUrl && <Avatar src={logoUrl} alt={appName} />}
@@ -94,24 +120,24 @@ const NavigationBar: FunctionComponent<ReactKitProps> = ({
             {appName}
           </Typography>
         </Box>
-      </Toolbar>
-      <List>
-        {pages.map((page) => {
-          const isActive = location.pathname === page.route;
-          return (
-            <ListItem key={page.route} disablePadding>
-              <ListItemButton
-                selected={isActive}
-                onClick={() => navigate(page.route)}
-              >
-                {page.icon && <ListItemIcon>{page.icon}</ListItemIcon>}
-                <ListItemText primary={page.name} />
-              </ListItemButton>
-            </ListItem>
-          );
-        })}
-      </List>
-    </Drawer>
+        <List>
+          {pages.map((page) => {
+            const isActive = location.pathname === page.route;
+            return (
+              <ListItem key={page.route} disablePadding>
+                <ListItemButton
+                  selected={isActive}
+                  onClick={() => handlePageNavigation(page.route)}
+                >
+                  {page.icon && <ListItemIcon>{page.icon}</ListItemIcon>}
+                  <ListItemText primary={page.name} />
+                </ListItemButton>
+              </ListItem>
+            );
+          })}
+        </List>
+      </Drawer>
+    </Fragment>
   );
 };
 
