@@ -86,11 +86,11 @@ const NavigationBar: FunctionComponent<ReactKitProps> = ({
             onClick={() => setMobileOpen(!mobileOpen)}
             sx={{ cursor: "pointer", userSelect: "none" }}
           >
-          {logoUrl && <Avatar src={logoUrl} alt={appName} />}
+            {logoUrl && <Avatar src={logoUrl} alt={appName} />}
+            <MenuIcon />
             <Typography variant="h6" noWrap component="div">
               {appName}
             </Typography>
-            <MenuIcon />
           </Box>
         </Toolbar>
       </AppBar>
