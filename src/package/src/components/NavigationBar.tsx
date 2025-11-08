@@ -57,7 +57,6 @@ const NavigationBar: FunctionComponent<ReactKitProps> = ({
             indicatorColor="secondary"
             variant="scrollable"
             scrollButtons="auto"
-            sx={{ flexGrow: 1, minWidth: 0 }}
             onChange={(_, value) => {
               if (value !== false) {
                 navigate(pages[value].route);
