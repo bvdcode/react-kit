@@ -1,21 +1,37 @@
 import { Box } from "@mui/material";
 import { FunctionComponent } from "react";
-import ProtectedContent from "./ProtectedContent";
 import { ReactKitProps } from "../types";
+import NavigationBar from "./NavigationBar";
+import ProtectedContent from "./ProtectedContent";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 const AppLayout: FunctionComponent<ReactKitProps> = (props) => {
+  const isVerticalNav = props.navigationPosition === "side";
+
   return (
-    <Box
-      display="flex"
-      width="100%"
-      height="100%"
-      bgcolor="red"
-      flexDirection={props.navigationPosition === "top" ? "column" : "row"}
-    >
-      <Box component="nav">{props.appName}</Box>
-      <Box component="main">
-        <BrowserRouter basename={props.basename}>
+    <BrowserRouter basename={props.basename}>
+      <Box
+        display="flex"
+        width="100%"
+        height="100%"
+        flexDirection={isVerticalNav ? "row" : "column"}
+      >
+        <NavigationBar
+          pages={props.pages}
+          orientation={isVerticalNav ? "vertical" : "horizontal"}
+          appName={props.appName}
+        />
+
+        <Box
+          component="main"
+          sx={{
+            p: {
+              xs: 1,
+              sm: 2,
+              md: 3,
+            },
+          }}
+        >
           <Routes>
             {props.pages.map((page) => {
               const element = page.protected ? (
@@ -29,9 +45,9 @@ const AppLayout: FunctionComponent<ReactKitProps> = (props) => {
             })}
             <Route path="*" element={<div>Not Found</div>} />
           </Routes>
-        </BrowserRouter>
+        </Box>
       </Box>
-    </Box>
+    </BrowserRouter>
   );
 };
 
