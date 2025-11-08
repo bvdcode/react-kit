@@ -4,7 +4,7 @@ export type ReactKitPage = {
   route: string;
   name?: string;
   icon?: ReactNode;
-  component: Element;
+  component: ReactNode;
   protected?: boolean;
 };
 
