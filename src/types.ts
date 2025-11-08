@@ -9,10 +9,10 @@ export type ReactKitPage = {
 };
 
 export type ReactKitProps = {
-  pages: ReactKitPage[];
   basename?: string;
-  isAuthenticated?: boolean;
   redirectPath?: string;
+  pages: ReactKitPage[];
+  isAuthenticated?: boolean;
   notFoundElement?: ReactNode;
   layout?: (children: ReactNode, pages: ReactKitPage[]) => ReactNode;
 };
