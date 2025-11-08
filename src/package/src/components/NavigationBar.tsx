@@ -13,6 +13,7 @@ import {
   ListItemText,
   ListItemButton,
 } from "@mui/material";
+import ThemeToggle from "./ThemeToggle";
 import { ReactKitProps } from "../types";
 import { Menu as MenuIcon } from "@mui/icons-material";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -35,13 +36,15 @@ const NavigationBar: FunctionComponent<ReactKitProps> = ({
 
     return (
       <AppBar position="static">
-        <Toolbar sx={{ gap: 2, userSelect: "none" }}>
+        <Toolbar
+          sx={{ gap: 2, userSelect: "none", justifyContent: "space-between" }}
+        >
           <Box
             display="flex"
             alignItems="center"
             gap={1}
             onClick={() => navigate("/")}
-            sx={{ cursor: "pointer", flexShrink: 0 }}
+            sx={{ cursor: "pointer", flexShrink: 0, minWidth: 0 }}
           >
             <Avatar src={logoUrl} alt={appName} />
             <Typography variant="h6" component="div" noWrap>
@@ -65,6 +68,9 @@ const NavigationBar: FunctionComponent<ReactKitProps> = ({
               <Tab key={page.route} label={page.name} />
             ))}
           </Tabs>
+          <Box sx={{ flexShrink: 0 }}>
+            <ThemeToggle />
+          </Box>
         </Toolbar>
       </AppBar>
     );
@@ -78,7 +84,7 @@ const NavigationBar: FunctionComponent<ReactKitProps> = ({
   return (
     <Fragment>
       <AppBar position="static">
-        <Toolbar>
+        <Toolbar sx={{ justifyContent: "space-between" }}>
           <Box
             display="flex"
             alignItems="center"
@@ -91,6 +97,9 @@ const NavigationBar: FunctionComponent<ReactKitProps> = ({
             <Typography variant="h6" noWrap component="div">
               {appName}
             </Typography>
+          </Box>
+          <Box>
+            <ThemeToggle />
           </Box>
         </Toolbar>
       </AppBar>
