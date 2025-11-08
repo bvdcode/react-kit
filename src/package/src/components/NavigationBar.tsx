@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 import { ReactKitProps } from "../types";
 import { FunctionComponent } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const NavigationBar: FunctionComponent<ReactKitProps> = ({
   pages,
@@ -24,6 +24,7 @@ const NavigationBar: FunctionComponent<ReactKitProps> = ({
   navigationPosition,
 }) => {
   const location = useLocation();
+  const navigate = useNavigate();
 
   if (navigationPosition === "top") {
     const currentTab = pages.findIndex(
@@ -33,12 +34,18 @@ const NavigationBar: FunctionComponent<ReactKitProps> = ({
     return (
       <AppBar position="static">
         <Toolbar>
-          <Box display="flex" alignItems="center" gap={1}>
+          <Box
+            display="flex"
+            alignItems="center"
+            gap={1}
+            onClick={() => navigate("/")}
+            sx={{ cursor: "pointer" }}
+          >
             <Avatar src={logoUrl} alt={appName} />
             <Typography
               variant="h6"
               component="div"
-              sx={{ flexShrink: 0, mr: 2 }}
+              sx={{ flexShrink: 0, mr: 1 }}
             >
               {appName}
             </Typography>
@@ -49,14 +56,14 @@ const NavigationBar: FunctionComponent<ReactKitProps> = ({
             indicatorColor="secondary"
             variant="scrollable"
             scrollButtons="auto"
+            onChange={(_, value) => {
+              if (value !== false) {
+                navigate(pages[value].route);
+              }
+            }}
           >
             {pages.map((page) => (
-              <Tab
-                key={page.route}
-                label={page.name}
-                component={Link}
-                to={page.route}
-              />
+              <Tab key={page.route} label={page.name} />
             ))}
           </Tabs>
         </Toolbar>
@@ -67,7 +74,13 @@ const NavigationBar: FunctionComponent<ReactKitProps> = ({
   return (
     <Drawer variant="permanent" anchor="left">
       <Toolbar>
-        <Typography variant="h6" noWrap component="div">
+        <Typography
+          variant="h6"
+          noWrap
+          component="div"
+          onClick={() => navigate("/")}
+          sx={{ cursor: "pointer" }}
+        >
           {appName}
         </Typography>
       </Toolbar>
@@ -77,9 +90,8 @@ const NavigationBar: FunctionComponent<ReactKitProps> = ({
           return (
             <ListItem key={page.route} disablePadding>
               <ListItemButton
-                component={Link}
-                to={page.route}
                 selected={isActive}
+                onClick={() => navigate(page.route)}
               >
                 {page.icon && <ListItemIcon>{page.icon}</ListItemIcon>}
                 <ListItemText primary={page.name} />
