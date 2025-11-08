@@ -27,7 +27,9 @@
   "peerDependencies": {
     "react": ">=18",
     "react-dom": ">=18",
-    "react-router-dom": ">=7"
+    "react-router-dom": ">=7",
+    "react-toastify": "^11.0.5",
+    "@mui/material": "^7.3.4"
   },
   "devDependencies": {
     "@types/react": "^19.2.2",
