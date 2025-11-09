@@ -1,12 +1,15 @@
 import { Box } from "@mui/material";
-import { FunctionComponent } from "react";
 import { ReactKitProps } from "../types";
+import { FunctionComponent } from "react";
+import FaviconManager from "./FaviconManager";
+import defaultLogoUrl from "../assets/default-logo.svg";
 import { NavigationBar, NotFound, ProtectedContent } from ".";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 const AppLayout: FunctionComponent<ReactKitProps> = (props) => {
   return (
     <BrowserRouter basename={props.basename}>
+      <FaviconManager faviconUrl={props.logoUrl ?? defaultLogoUrl} />
       <Routes>
         <Route
           element={
