@@ -1,10 +1,9 @@
+import { ThemeMode } from "../types";
 import { darkTheme } from "../themes/darkTheme";
 import { lightTheme } from "../themes/lightTheme";
+import { useThemeStore } from "../store/themeStore";
 import { ThemeProvider, CssBaseline } from "@mui/material";
 import { createContext, useContext, useMemo, ReactNode } from "react";
-import { useThemeStore } from "../store/themeStore";
-
-type ThemeMode = "light" | "dark";
 
 interface ThemeContextType {
   mode: ThemeMode;
@@ -36,7 +35,10 @@ export const ThemeContextProvider = ({
     [mode],
   );
 
-  const contextValue = useMemo(() => ({ mode, toggleTheme }), [mode, toggleTheme]);
+  const contextValue = useMemo(
+    () => ({ mode, toggleTheme }),
+    [mode, toggleTheme],
+  );
 
   return (
     <ThemeContext.Provider value={contextValue}>

@@ -1,7 +1,6 @@
 import { create } from "zustand";
+import { ThemeMode } from "../types";
 import { persist } from "zustand/middleware";
-
-type ThemeMode = "light" | "dark";
 
 interface ThemeStore {
   mode: ThemeMode;
@@ -17,6 +16,6 @@ export const useThemeStore = create<ThemeStore>()(
     }),
     {
       name: "react-kit-theme",
-    }
-  )
+    },
+  ),
 );

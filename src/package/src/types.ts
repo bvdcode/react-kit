@@ -14,3 +14,5 @@ export type ReactKitProps = {
   basename?: string;
   pages: ReactKitPage[];
 };
+
+export type ThemeMode = "light" | "dark";
