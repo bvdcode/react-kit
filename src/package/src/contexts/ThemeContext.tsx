@@ -27,10 +27,17 @@ interface ThemeContextProviderProps {
 export const ThemeContextProvider = ({
   children,
 }: ThemeContextProviderProps) => {
-  const [mode, setMode] = useState<ThemeMode>("dark");
+  const [mode, setMode] = useState<ThemeMode>(() => {
+    const savedMode = localStorage.getItem("theme-mode");
+    return savedMode === "light" || savedMode === "dark" ? savedMode : "dark";
+  });
 
   const toggleTheme = () => {
-    setMode((prev) => (prev === "light" ? "dark" : "light"));
+    setMode((prev) => {
+      const newMode = prev === "light" ? "dark" : "light";
+      localStorage.setItem("theme-mode", newMode);
+      return newMode;
+    });
   };
 
   const theme = useMemo(
