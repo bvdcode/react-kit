@@ -1,5 +1,5 @@
 import { createRoot } from "react-dom/client";
-import { AppShell } from "@bvdcode/react-kit/AppShell";
+import { AppShell } from "../../package/src/AppShell";
 
 const App = () => {
   return (
@@ -13,7 +13,6 @@ const App = () => {
       }}
     >
       <AppShell
-        logoUrl={"https://reactjs.org/logo-og.png"}
         appName="React Kit"
         pages={[
           {

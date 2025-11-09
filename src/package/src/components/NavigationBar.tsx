@@ -10,6 +10,7 @@ import {
 import { ThemeToggle } from ".";
 import { ReactKitProps } from "../types";
 import { FunctionComponent } from "react";
+import defaultLogoUrl from "../assets/default-logo.svg";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const NavigationBar: FunctionComponent<ReactKitProps> = ({
@@ -42,7 +43,8 @@ const NavigationBar: FunctionComponent<ReactKitProps> = ({
           onClick={() => navigate("/")}
           sx={{ cursor: "pointer" }}
         >
-          <Avatar src={logoUrl} alt={appName} />
+          <Avatar src={logoUrl ?? defaultLogoUrl} alt={appName}
+          />
           <Typography
             variant="h6"
             component="div"
