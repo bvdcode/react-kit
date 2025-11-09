@@ -1,7 +1,8 @@
 import { darkTheme } from "../themes/darkTheme";
 import { lightTheme } from "../themes/lightTheme";
 import { ThemeProvider, CssBaseline } from "@mui/material";
-import { createContext, useContext, useState, useMemo, ReactNode } from "react";
+import { createContext, useContext, useMemo, ReactNode } from "react";
+import { useThemeStore } from "../store/themeStore";
 
 type ThemeMode = "light" | "dark";
 
@@ -27,25 +28,15 @@ interface ThemeContextProviderProps {
 export const ThemeContextProvider = ({
   children,
 }: ThemeContextProviderProps) => {
-  const [mode, setMode] = useState<ThemeMode>(() => {
-    const savedMode = localStorage.getItem("theme-mode");
-    return savedMode === "light" || savedMode === "dark" ? savedMode : "dark";
-  });
-
-  const toggleTheme = () => {
-    setMode((prev) => {
-      const newMode = prev === "light" ? "dark" : "light";
-      localStorage.setItem("theme-mode", newMode);
-      return newMode;
-    });
-  };
+  const mode = useThemeStore((state) => state.mode);
+  const toggleTheme = useThemeStore((state) => state.toggleTheme);
 
   const theme = useMemo(
     () => (mode === "light" ? lightTheme : darkTheme),
     [mode],
   );
 
-  const contextValue = useMemo(() => ({ mode, toggleTheme }), [mode]);
+  const contextValue = useMemo(() => ({ mode, toggleTheme }), [mode, toggleTheme]);
 
   return (
     <ThemeContext.Provider value={contextValue}>
