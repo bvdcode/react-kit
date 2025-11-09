@@ -43,8 +43,7 @@ const NavigationBar: FunctionComponent<ReactKitProps> = ({
           onClick={() => navigate("/")}
           sx={{ cursor: "pointer" }}
         >
-          <Avatar src={logoUrl ?? defaultLogoUrl} alt={appName}
-          />
+          <Avatar src={logoUrl ?? defaultLogoUrl} alt={appName} />
           <Typography
             variant="h6"
             component="div"
