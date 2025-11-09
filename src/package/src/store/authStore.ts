@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 interface AuthStore {
   refreshToken: string | null;
@@ -7,9 +8,16 @@ interface AuthStore {
   clearRefreshToken: () => void;
 }
 
-export const useAuthStore = create<AuthStore>((set, get) => ({
-  refreshToken: null,
-  setRefreshToken: (token: string) => set(() => ({ refreshToken: token })),
-  getRefreshToken: () => get().refreshToken,
-  clearRefreshToken: () => set(() => ({ refreshToken: null })),
-}));
+export const useAuthStore = create<AuthStore>()(
+  persist(
+    (set, get) => ({
+      refreshToken: null,
+      setRefreshToken: (token: string) => set(() => ({ refreshToken: token })),
+      getRefreshToken: () => get().refreshToken,
+      clearRefreshToken: () => set(() => ({ refreshToken: null })),
+    }),
+    {
+      name: "react-kit-auth",
+    },
+  ),
+);
