@@ -3,7 +3,7 @@ import axios, {
   AxiosInstance,
   InternalAxiosRequestConfig,
 } from "axios";
-import type { AuthConfig, TokenPair } from "../types";
+import type { ReactKitProps, TokenPair } from "../types";
 
 let isRefreshing = false;
 let failedQueue: Array<{
@@ -24,14 +24,14 @@ const processQueue = (error: any, token: string | null = null) => {
 
 export class AuthenticatedAxiosInstance {
   private axiosInstance: AxiosInstance;
-  private config: AuthConfig;
+  private props: ReactKitProps;
   private accessToken: string | null = null;
   private refreshToken: string | null = null;
 
-  constructor(config: AuthConfig) {
-    this.config = config;
+  constructor(props: ReactKitProps) {
+    this.props = props;
     this.axiosInstance = axios.create({
-      baseURL: config.baseURL,
+      baseURL: props.baseURL,
     });
 
     this.setupInterceptors();
@@ -39,7 +39,7 @@ export class AuthenticatedAxiosInstance {
   }
 
   private loadTokensFromStorage() {
-    const storageKey = this.config.tokenStorageKey || "auth_tokens";
+    const storageKey = this.props.authConfig?.tokenStorageKey || "auth_tokens";
     try {
       const stored = localStorage.getItem(storageKey);
       if (stored) {
