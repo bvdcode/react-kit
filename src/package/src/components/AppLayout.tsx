@@ -1,8 +1,7 @@
 import { Box } from "@mui/material";
 import { FunctionComponent } from "react";
 import { ReactKitProps } from "../types";
-import NavigationBar from "./NavigationBar";
-import ProtectedContent from "./ProtectedContent";
+import { NavigationBar, NotFound, ProtectedContent } from ".";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 const AppLayout: FunctionComponent<ReactKitProps> = (props) => {
@@ -23,7 +22,7 @@ const AppLayout: FunctionComponent<ReactKitProps> = (props) => {
                 <Route key={page.route} path={page.route} element={element} />
               );
             })}
-            <Route path="*" element={<div>Not Found</div>} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </Box>
       </Box>

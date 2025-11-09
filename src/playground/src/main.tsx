@@ -19,7 +19,11 @@ const App = () => {
           {
             route: "/",
             name: "Home",
-            component: <div>Home Page Content</div>,
+            component: (
+              <div>
+                Home Page Content <a href="/dawdaw">no</a>
+              </div>
+            ),
             icon: <div>🏠</div>,
           },
           {

@@ -7,7 +7,7 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-import ThemeToggle from "./ThemeToggle";
+import { ThemeToggle } from ".";
 import { ReactKitProps } from "../types";
 import { FunctionComponent } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
