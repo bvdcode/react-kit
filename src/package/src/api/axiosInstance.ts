@@ -4,6 +4,7 @@ import axios, {
   InternalAxiosRequestConfig,
 } from "axios";
 import type { ReactKitProps, TokenPair } from "../types";
+import { useAuthStore } from "../store/authStore";
 
 let isRefreshing = false;
 let failedQueue: Array<{
@@ -26,7 +27,6 @@ export class AuthenticatedAxiosInstance {
   private axiosInstance: AxiosInstance;
   private props: ReactKitProps;
   private accessToken: string | null = null;
-  private refreshToken: string | null = null;
 
   constructor(props: ReactKitProps) {
     this.props = props;
@@ -35,38 +35,18 @@ export class AuthenticatedAxiosInstance {
     });
 
     this.setupInterceptors();
-    this.loadTokensFromStorage();
   }
 
-  private loadTokensFromStorage() {
-    const storageKey = this.props.authConfig?.tokenStorageKey || "auth_tokens";
-    try {
-      const stored = localStorage.getItem(storageKey);
-      if (stored) {
-        const tokens = JSON.parse(stored) as TokenPair;
-        this.setTokens(tokens);
-      }
-    } catch (error) {
-      console.error("Failed to load tokens from storage:", error);
-    }
+  private getRefreshToken(): string | null {
+    return useAuthStore.getState().getRefreshToken();
   }
 
-  private saveTokensToStorage(tokens: TokenPair) {
-    const storageKey = this.config.tokenStorageKey || "auth_tokens";
-    try {
-      localStorage.setItem(storageKey, JSON.stringify(tokens));
-    } catch (error) {
-      console.error("Failed to save tokens to storage:", error);
-    }
+  private setRefreshToken(refreshToken: string): void {
+    useAuthStore.getState().setRefreshToken(refreshToken);
   }
 
-  private clearTokensFromStorage() {
-    const storageKey = this.config.tokenStorageKey || "auth_tokens";
-    try {
-      localStorage.removeItem(storageKey);
-    } catch (error) {
-      console.error("Failed to clear tokens from storage:", error);
-    }
+  private clearRefreshToken(): void {
+    useAuthStore.getState().clearRefreshToken();
   }
 
   private setupInterceptors() {
@@ -108,7 +88,8 @@ export class AuthenticatedAxiosInstance {
           originalRequest._retry = true;
           isRefreshing = true;
 
-          if (!this.refreshToken) {
+          const refreshToken = this.getRefreshToken();
+          if (!refreshToken) {
             // No refresh token - logout
             isRefreshing = false;
             processQueue(new Error("No refresh token available"), null);
@@ -118,13 +99,15 @@ export class AuthenticatedAxiosInstance {
 
           try {
             // Try to refresh the token
-            if (!this.config.onRefreshToken) {
+            if (!this.props.authConfig?.onRefreshToken) {
               throw new Error("onRefreshToken handler is not configured");
             }
 
-            const tokens = await this.config.onRefreshToken(this.refreshToken);
-            this.setTokens(tokens);
-            this.saveTokensToStorage(tokens);
+            const tokens = await this.props.authConfig.onRefreshToken(
+              refreshToken,
+            );
+            this.accessToken = tokens.accessToken;
+            this.setRefreshToken(tokens.refreshToken);
 
             // Process all queued requests
             processQueue(null, tokens.accessToken);
@@ -150,15 +133,11 @@ export class AuthenticatedAxiosInstance {
   }
 
   private handleUnauthorized() {
-    this.clearTokens();
-    this.clearTokensFromStorage();
+    this.accessToken = null;
+    this.clearRefreshToken();
 
-    if (this.config.onUnauthorized) {
-      this.config.onUnauthorized();
-    }
-
-    if (this.config.onLogout) {
-      const result = this.config.onLogout();
+    if (this.props.authConfig?.onLogout) {
+      const result = this.props.authConfig.onLogout();
       if (result instanceof Promise) {
         result.catch((err: unknown) => {
           console.error("Logout handler failed:", err);
@@ -167,14 +146,18 @@ export class AuthenticatedAxiosInstance {
     }
   }
 
-  public setTokens(tokens: TokenPair) {
-    this.accessToken = tokens.accessToken;
-    this.refreshToken = tokens.refreshToken;
+  public setAccessToken(accessToken: string): void {
+    this.accessToken = accessToken;
   }
 
-  public clearTokens() {
+  public setTokens(tokens: TokenPair): void {
+    this.accessToken = tokens.accessToken;
+    this.setRefreshToken(tokens.refreshToken);
+  }
+
+  public clearTokens(): void {
     this.accessToken = null;
-    this.refreshToken = null;
+    this.clearRefreshToken();
   }
 
   public getAxiosInstance(): AxiosInstance {
@@ -182,7 +165,7 @@ export class AuthenticatedAxiosInstance {
   }
 
   public hasTokens(): boolean {
-    return !!(this.accessToken && this.refreshToken);
+    return !!(this.accessToken && this.getRefreshToken());
   }
 
   public getAccessToken(): string | null {

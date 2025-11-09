@@ -1,7 +1,7 @@
 import type {
   UserInfo,
   TokenPair,
-  AuthConfig,
+  ReactKitProps,
   LoginCredentials,
 } from "../types";
 import type { AxiosInstance } from "axios";
@@ -9,9 +9,9 @@ import { AuthenticatedAxiosInstance } from "./axiosInstance";
 
 export class ApiService {
   private authAxios: AuthenticatedAxiosInstance;
-  private config: AuthConfig;
+  private config: ReactKitProps;
 
-  constructor(config: AuthConfig) {
+  constructor(config: ReactKitProps) {
     this.config = config;
     this.authAxios = new AuthenticatedAxiosInstance(config);
   }
@@ -27,11 +27,11 @@ export class ApiService {
    * Login - external code must provide a handler
    */
   public async login(credentials: LoginCredentials): Promise<TokenPair> {
-    if (!this.config.onLogin) {
+    if (!this.config.authConfig?.onLogin) {
       throw new Error("onLogin handler is not configured");
     }
 
-    const tokens = await this.config.onLogin(this.getAxios(), credentials);
+    const tokens = await this.config.authConfig.onLogin(credentials);
     this.authAxios.setTokens(tokens);
     return tokens;
   }
@@ -40,11 +40,11 @@ export class ApiService {
    * Get user info - external code must provide a handler
    */
   public async getUserInfo(): Promise<UserInfo> {
-    if (!this.config.onGetUserInfo) {
+    if (!this.config.authConfig?.onGetUserInfo) {
       throw new Error("onGetUserInfo handler is not configured");
     }
 
-    return await this.config.onGetUserInfo(this.getAxios());
+    return await this.config.authConfig.onGetUserInfo(this.getAxios());
   }
 
   /**
@@ -53,8 +53,8 @@ export class ApiService {
   public async logout(): Promise<void> {
     this.authAxios.clearTokens();
 
-    if (this.config.onLogout) {
-      await this.config.onLogout();
+    if (this.config.authConfig?.onLogout) {
+      await this.config.authConfig.onLogout();
     }
   }
 
