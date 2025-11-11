@@ -31,16 +31,8 @@ const App = () => {
           },
           getUserInfo: async (axiosInstance) => {
             const url = "http://localhost:5182/api/v1/users/me";
-            const response = await fetch(url, {
-              method: "GET",
-              headers: {
-                "Content-Type": "application/json",
-              },
-            });
-            if (!response.ok) {
-              throw new Error("Failed to fetch user info");
-            }
-            return response.json();
+            const response = await axiosInstance.get(url);
+            return response.data;
           },
           onRefreshToken(refreshToken) {
             alert("Refreshing token: " + refreshToken);
