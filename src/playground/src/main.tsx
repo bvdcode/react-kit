@@ -14,6 +14,25 @@ const App = () => {
     >
       <AppShell
         appName="React Kit"
+        authConfig={{
+          login: async (credentials) => {
+            if (credentials.username === "pigland@belov.us") {
+              return {
+                accessToken: "fake-access-token",
+                refreshToken: "fake-refresh-token",
+              };
+            } else {
+              throw new Error("Invalid username or password");
+            }
+          },
+          getUserInfo(axiosInstance) {
+            return Promise.resolve({
+              id: "1",
+              username: "pigland@belov.us",
+              displayName: "Mr. Pig",
+            });
+          },
+        }}
         pages={[
           {
             route: "/",
@@ -59,7 +78,6 @@ const App = () => {
             route: "/protected",
             name: "Protected",
             component: <div>Protected Page Content</div>,
-            protected: true,
             icon: <div>🔒</div>,
           },
         ]}

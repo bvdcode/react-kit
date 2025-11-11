@@ -32,11 +32,11 @@ export interface UserInfo {
 }
 
 export interface AuthConfig {
-  onLogin?: (
+  login?: (
     credentials: LoginCredentials,
   ) => Promise<TokenPair>;
   onRefreshToken?: (refreshToken: string) => Promise<TokenPair>;
-  onGetUserInfo?: (axiosInstance: AxiosInstance) => Promise<UserInfo>;
+  getUserInfo?: (axiosInstance: AxiosInstance) => Promise<UserInfo>;
   onLogout?: () => Promise<void> | void;
 }
 

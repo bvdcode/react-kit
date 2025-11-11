@@ -27,11 +27,11 @@ export class ApiService {
    * Login - external code must provide a handler
    */
   public async login(credentials: LoginCredentials): Promise<TokenPair> {
-    if (!this.config.authConfig?.onLogin) {
+    if (!this.config.authConfig?.login) {
       throw new Error("onLogin handler is not configured");
     }
 
-    const tokens = await this.config.authConfig.onLogin(credentials);
+    const tokens = await this.config.authConfig.login(credentials);
     this.authAxios.setTokens(tokens);
     return tokens;
   }
@@ -40,11 +40,11 @@ export class ApiService {
    * Get user info - external code must provide a handler
    */
   public async getUserInfo(): Promise<UserInfo> {
-    if (!this.config.authConfig?.onGetUserInfo) {
+    if (!this.config.authConfig?.getUserInfo) {
       throw new Error("onGetUserInfo handler is not configured");
     }
 
-    return await this.config.authConfig.onGetUserInfo(this.getAxios());
+    return await this.config.authConfig.getUserInfo(this.getAxios());
   }
 
   /**
