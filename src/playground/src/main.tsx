@@ -30,6 +30,15 @@ const App = () => {
               id: "1",
               username: "pigland@belov.us",
               displayName: "Mr. Pig",
+              avatarUrl:
+                "https://cdn.vectorstock.com/i/500p/97/68/account-avatar-dark-mode-glyph-ui-icon-vector-44429768.jpg",
+            });
+          },
+          onRefreshToken(refreshToken) {
+            alert("Refreshing token: " + refreshToken);
+            return Promise.resolve({
+              accessToken: "new-fake-access-token",
+              refreshToken: "new-fake-refresh-token",
             });
           },
         }}

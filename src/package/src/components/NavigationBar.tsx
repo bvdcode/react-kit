@@ -15,12 +15,7 @@ import {
   Divider,
   IconButton,
 } from "@mui/material";
-import {
-  Logout,
-  Language,
-  LightMode,
-  DarkMode,
-} from "@mui/icons-material";
+import { Logout, Language, LightMode, DarkMode } from "@mui/icons-material";
 import { ThemeToggle } from ".";
 import { ReactKitProps } from "../types";
 import { FunctionComponent, useState, useEffect } from "react";
@@ -176,7 +171,8 @@ const NavigationBar: FunctionComponent<ReactKitProps> = ({
                 {userInfo?.displayName || "User"}
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                @{userInfo?.username || "username"}
+                {!userInfo?.username.includes("@") && "@"}
+                {userInfo?.username || "username"}
               </Typography>
             </Box>
             <Divider />
@@ -197,9 +193,7 @@ const NavigationBar: FunctionComponent<ReactKitProps> = ({
                 <ListItemIcon>
                   <Language />
                 </ListItemIcon>
-                <ListItemText
-                  primary={`${t("navigation.language")}: ${i18n.language.toUpperCase()}`}
-                />
+                <ListItemText primary={t("navigation.language")} />
               </ListItemButton>
               <Divider />
               <ListItemButton onClick={handleLogout}>
