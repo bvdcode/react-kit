@@ -16,23 +16,31 @@ const App = () => {
         appName="React Kit"
         authConfig={{
           login: async (credentials) => {
-            if (credentials.username === "pigland@belov.us") {
-              return {
-                accessToken: "fake-access-token",
-                refreshToken: "fake-refresh-token",
-              };
-            } else {
-              throw new Error("Invalid username or password");
-            }
-          },
-          getUserInfo(axiosInstance) {
-            return Promise.resolve({
-              id: "1",
-              username: "pigland@belov.us",
-              displayName: "Mr. Pig",
-              avatarUrl:
-                "https://cdn.vectorstock.com/i/500p/97/68/account-avatar-dark-mode-glyph-ui-icon-vector-44429768.jpg",
+            const url = "http://localhost:5182/api/v1/auth/login";
+            const response = await fetch(url, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(credentials),
             });
+            if (!response.ok) {
+              throw new Error("Login failed");
+            }
+            return response.json();
+          },
+          getUserInfo: async (axiosInstance) => {
+            const url = "http://localhost:5182/api/v1/users/me";
+            const response = await fetch(url, {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+              },
+            });
+            if (!response.ok) {
+              throw new Error("Failed to fetch user info");
+            }
+            return response.json();
           },
           onRefreshToken(refreshToken) {
             alert("Refreshing token: " + refreshToken);
@@ -54,40 +62,10 @@ const App = () => {
             icon: <div>🏠</div>,
           },
           {
-            route: "/about",
-            name: "About",
-            component: <div>About Page Content</div>,
-            icon: <div>ℹ️</div>,
-          },
-          {
-            route: "/contact",
-            name: "Contact",
-            component: <div>Contact Page Content</div>,
-            icon: <div>📞</div>,
-          },
-          {
-            route: "/work",
-            name: "Work",
-            component: <div>Work Page Content</div>,
-            icon: <div>💼</div>,
-          },
-          {
-            route: "/blog",
-            name: "Blog",
-            component: <div>Blog Page Content</div>,
-            icon: <div>📝</div>,
-          },
-          {
-            route: "/settings",
-            name: "Settings",
-            component: <div>Settings Page Content</div>,
-            icon: <div>⚙️</div>,
-          },
-          {
-            route: "/protected",
-            name: "Protected",
-            component: <div>Protected Page Content</div>,
-            icon: <div>🔒</div>,
+            route: "/files",
+            name: "Files",
+            component: <div>Files Page Content</div>,
+            icon: <div>📁</div>,
           },
         ]}
       />
