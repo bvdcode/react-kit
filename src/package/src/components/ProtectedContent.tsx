@@ -1,23 +1,19 @@
 import React from "react";
-import { Box } from "@mui/material";
+import { useAuthStore } from "../store/authStore";
+import LoginPage from "./LoginPage";
 
-type Props = React.PropsWithChildren<React.HTMLAttributes<HTMLDivElement>>;
+type Props = React.PropsWithChildren;
 
-const ProtectedContent: React.FC<Props> = ({
-  children,
-  style,
-  className,
-  ...rest
-}) => {
-  return (
-    <Box
-      {...rest}
-      className={className}
-      sx={{ border: "1px solid red", ...style }}
-    >
-      {children}
-    </Box>
-  );
+const ProtectedContent: React.FC<Props> = ({ children }) => {
+  const accessToken = useAuthStore((s) => s.accessToken);
+  const refreshToken = useAuthStore((s) => s.refreshToken);
+
+  // If no tokens - show login page
+  if (!accessToken && !refreshToken) {
+    return <LoginPage />;
+  }
+
+  return <>{children}</>;
 };
 
 export default ProtectedContent;

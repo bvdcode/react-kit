@@ -45,3 +45,13 @@ export interface LoginCredentials {
   username: string;
   password: string;
 }
+
+export class AuthError extends Error {
+  constructor(
+    message: string,
+    public code?: string,
+  ) {
+    super(message);
+    this.name = "AuthError";
+  }
+}

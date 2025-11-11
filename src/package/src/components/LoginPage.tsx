@@ -9,14 +9,13 @@ import {
   CircularProgress,
 } from "@mui/material";
 import React, { useState } from "react";
-import { useAuth } from "../store/authStore";
+import { useAuthStore } from "../store/authStore";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
+import { AuthError } from "../types";
 
 const LoginPage: React.FC = () => {
   const { t } = useTranslation();
-  const navigate = useNavigate();
-  const login = useAuth((s) => s.login);
+  const login = useAuthStore((s) => s.login);
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -29,10 +28,16 @@ const LoginPage: React.FC = () => {
     setLoading(true);
 
     try {
-      await login(username, password);
-      navigate("/app");
+      await login({ username, password });
+      // No need to navigate - ProtectedContent will re-render
     } catch (err) {
-      setError(err instanceof Error ? err.message : t("login.unknownError"));
+      if (err instanceof AuthError) {
+        setError(err.message);
+      } else if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError(t("login.unknownError"));
+      }
     } finally {
       setLoading(false);
     }
@@ -44,11 +49,12 @@ const LoginPage: React.FC = () => {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        minHeight: "100vh",
+        flex: 1,
         bgcolor: "background.default",
+        p: 2,
       }}
     >
-      <Card sx={{ maxWidth: 400, width: "100%", mx: 2 }}>
+      <Card sx={{ maxWidth: 400, width: "100%" }}>
         <CardContent sx={{ p: 4 }}>
           <Typography variant="h4" component="h1" gutterBottom align="center">
             {t("login.title")}

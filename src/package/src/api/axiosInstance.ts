@@ -35,18 +35,27 @@ export class AuthenticatedAxiosInstance {
     });
 
     this.setupInterceptors();
+    this.restoreAccessTokenFromStore();
+  }
+
+  private restoreAccessTokenFromStore(): void {
+    const accessToken = useAuthStore.getState().accessToken;
+    if (accessToken) {
+      this.accessToken = accessToken;
+    }
   }
 
   private getRefreshToken(): string | null {
     return useAuthStore.getState().getRefreshToken();
   }
 
-  private setRefreshToken(refreshToken: string): void {
-    useAuthStore.getState().setRefreshToken(refreshToken);
+  private setTokensInStore(tokens: TokenPair): void {
+    useAuthStore.getState().setRefreshToken(tokens.refreshToken);
+    useAuthStore.getState().setAccessToken(tokens.accessToken);
   }
 
-  private clearRefreshToken(): void {
-    useAuthStore.getState().clearRefreshToken();
+  private clearTokensInStore(): void {
+    useAuthStore.getState().clearTokens();
   }
 
   private setupInterceptors() {
@@ -107,7 +116,7 @@ export class AuthenticatedAxiosInstance {
               refreshToken,
             );
             this.accessToken = tokens.accessToken;
-            this.setRefreshToken(tokens.refreshToken);
+            this.setTokensInStore(tokens);
 
             // Process all queued requests
             processQueue(null, tokens.accessToken);
@@ -134,7 +143,7 @@ export class AuthenticatedAxiosInstance {
 
   private handleUnauthorized() {
     this.accessToken = null;
-    this.clearRefreshToken();
+    this.clearTokensInStore();
 
     if (this.props.authConfig?.onLogout) {
       const result = this.props.authConfig.onLogout();
@@ -152,12 +161,12 @@ export class AuthenticatedAxiosInstance {
 
   public setTokens(tokens: TokenPair): void {
     this.accessToken = tokens.accessToken;
-    this.setRefreshToken(tokens.refreshToken);
+    this.setTokensInStore(tokens);
   }
 
   public clearTokens(): void {
     this.accessToken = null;
-    this.clearRefreshToken();
+    this.clearTokensInStore();
   }
 
   public getAxiosInstance(): AxiosInstance {
