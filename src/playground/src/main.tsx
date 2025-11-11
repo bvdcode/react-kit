@@ -36,7 +36,19 @@ const App = () => {
             return response.data;
           },
           onRefreshToken(refreshToken): Promise<TokenPair> {
-            throw new Error("Function not implemented.");
+            const url = "http://localhost:5182/api/v1/auth/refresh";
+            return fetch(url, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ refreshToken }),
+            }).then((response) => {
+              if (!response.ok) {
+                throw new Error("Token refresh failed");
+              }
+              return response.json();
+            });
           },
         }}
         pages={[
