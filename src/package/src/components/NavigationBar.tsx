@@ -6,12 +6,29 @@ import {
   AppBar,
   Toolbar,
   Typography,
+  Popover,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Divider,
+  IconButton,
 } from "@mui/material";
+import {
+  Logout,
+  Language,
+  LightMode,
+  DarkMode,
+} from "@mui/icons-material";
 import { ThemeToggle } from ".";
 import { ReactKitProps } from "../types";
-import { FunctionComponent } from "react";
+import { FunctionComponent, useState, useEffect } from "react";
 import defaultLogoUrl from "../assets/default-logo.svg";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useAuthStore } from "../store/authStore";
+import { useThemeStore } from "../store/themeStore";
+import { useTranslation } from "react-i18next";
 
 const NavigationBar: FunctionComponent<ReactKitProps> = ({
   pages,
@@ -20,10 +37,56 @@ const NavigationBar: FunctionComponent<ReactKitProps> = ({
 }) => {
   const location = useLocation();
   const navigate = useNavigate();
+  const { t, i18n } = useTranslation();
+  const logout = useAuthStore((s) => s.logout);
+  const apiService = useAuthStore((s) => s.apiService);
+  const mode = useThemeStore((s) => s.mode);
+  const toggleTheme = useThemeStore((s) => s.toggleTheme);
+
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
+  const [userInfo, setUserInfo] = useState<{
+    displayName: string;
+    username: string;
+    avatarUrl?: string;
+  } | null>(null);
 
   const currentTab = pages.findIndex(
     (page) => page.route === location.pathname,
   );
+
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      if (apiService) {
+        try {
+          const info = await apiService.getUserInfo();
+          setUserInfo(info);
+        } catch (error) {
+          console.error("Failed to fetch user info:", error);
+        }
+      }
+    };
+    fetchUserInfo();
+  }, [apiService]);
+
+  const handlePopoverOpen = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handlePopoverClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleLogout = async () => {
+    handlePopoverClose();
+    await logout();
+  };
+
+  const toggleLanguage = () => {
+    const newLang = i18n.language === "en" ? "ru" : "en";
+    i18n.changeLanguage(newLang);
+  };
+
+  const open = Boolean(anchorEl);
 
   return (
     <AppBar position="static">
@@ -76,7 +139,77 @@ const NavigationBar: FunctionComponent<ReactKitProps> = ({
           </Tabs>
         </Box>
         <Box display="flex" alignItems="center" justifyContent="flex-end">
-          <ThemeToggle />
+          <IconButton
+            onMouseEnter={handlePopoverOpen}
+            onClick={handlePopoverOpen}
+            sx={{ p: 0 }}
+          >
+            <Avatar
+              src={userInfo?.avatarUrl}
+              alt={userInfo?.displayName || "User"}
+            >
+              {userInfo?.displayName?.[0]?.toUpperCase() || "U"}
+            </Avatar>
+          </IconButton>
+
+          <Popover
+            open={open}
+            anchorEl={anchorEl}
+            onClose={handlePopoverClose}
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "right",
+            }}
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "right",
+            }}
+            slotProps={{
+              paper: {
+                onMouseLeave: handlePopoverClose,
+                sx: { mt: 1 },
+              },
+            }}
+          >
+            <Box sx={{ p: 2, minWidth: 250 }}>
+              <Typography variant="subtitle1" fontWeight="bold">
+                {userInfo?.displayName || "User"}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                @{userInfo?.username || "username"}
+              </Typography>
+            </Box>
+            <Divider />
+            <List dense>
+              <ListItemButton onClick={toggleTheme}>
+                <ListItemIcon>
+                  {mode === "dark" ? <LightMode /> : <DarkMode />}
+                </ListItemIcon>
+                <ListItemText
+                  primary={
+                    mode === "dark"
+                      ? t("navigation.lightMode")
+                      : t("navigation.darkMode")
+                  }
+                />
+              </ListItemButton>
+              <ListItemButton onClick={toggleLanguage}>
+                <ListItemIcon>
+                  <Language />
+                </ListItemIcon>
+                <ListItemText
+                  primary={`${t("navigation.language")}: ${i18n.language.toUpperCase()}`}
+                />
+              </ListItemButton>
+              <Divider />
+              <ListItemButton onClick={handleLogout}>
+                <ListItemIcon>
+                  <Logout />
+                </ListItemIcon>
+                <ListItemText primary={t("navigation.logout")} />
+              </ListItemButton>
+            </List>
+          </Popover>
         </Box>
       </Toolbar>
     </AppBar>

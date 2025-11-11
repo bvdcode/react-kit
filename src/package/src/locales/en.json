@@ -9,6 +9,12 @@
     "sessionExpired": "Your session has expired. Please sign in again.",
     "configError": "Authentication is not configured. Please provide authConfig with onLogin handler in AppShell props."
   },
+  "navigation": {
+    "lightMode": "Light Mode",
+    "darkMode": "Dark Mode",
+    "language": "Language",
+    "logout": "Logout"
+  },
   "files": {
     "title": "Files",
     "subtitle": "Manage and browse your files here.",
