@@ -86,7 +86,12 @@ const LoginPage: React.FC<Props> = ({ appProps }) => {
             <Avatar
               src={appProps.logoUrl ?? defaultLogoUrl}
               alt={appProps.appName}
-              sx={{ width: 80, height: 80 }}
+              sx={{
+                width: 80,
+                height: 80,
+                transition: "transform 0.2s ease-in-out",
+                ":hover": { transform: "scale(1.02)" },
+              }}
             />
             <Typography variant="h5" component="div" fontWeight="bold">
               {appProps.appName}

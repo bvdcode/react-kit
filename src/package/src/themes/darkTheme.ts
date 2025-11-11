@@ -36,7 +36,7 @@ export const darkTheme = createTheme({
         select:-webkit-autofill:focus,
         .MuiInputBase-input:-webkit-autofill {
           -webkit-box-shadow: 0 0 0px 1000px rgba(255,255,255,0.04) inset !important;
-          box-shadow: 0 0 0px 1000px rgba(255,255,255,0.04) inset !important;
+          box-shadow: 0 0 0px 1000px rgba(0, 0, 0, 0) inset !important;
           -webkit-text-fill-color: #fff !important;
           caret-color: #fff;
           transition: background-color 50000s ease-in-out 0s !important;
