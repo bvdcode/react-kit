@@ -10,7 +10,7 @@ const AppLayout: FunctionComponent<ReactKitProps> = (props) => {
   return (
     <BrowserRouter basename={props.basename}>
       <FaviconManager faviconUrl={props.logoUrl ?? defaultLogoUrl} />
-      <ProtectedContent>
+      <ProtectedContent appProps={props}>
         <Routes>
           <Route
             element={

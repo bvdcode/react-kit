@@ -2,6 +2,7 @@ import {
   Box,
   Card,
   Alert,
+  Avatar,
   Button,
   TextField,
   Typography,
@@ -11,9 +12,14 @@ import {
 import React, { useState } from "react";
 import { useAuthStore } from "../store/authStore";
 import { useTranslation } from "react-i18next";
-import { AuthError } from "../types";
+import { AuthError, ReactKitProps } from "../types";
+import defaultLogoUrl from "../assets/default-logo.svg";
 
-const LoginPage: React.FC = () => {
+type Props = {
+  appProps: ReactKitProps;
+};
+
+const LoginPage: React.FC<Props> = ({ appProps }) => {
   const { t } = useTranslation();
   const login = useAuthStore((s) => s.login);
   const apiService = useAuthStore((s) => s.apiService);
@@ -61,18 +67,24 @@ const LoginPage: React.FC = () => {
     >
       <Card sx={{ maxWidth: 400, width: "100%" }}>
         <CardContent sx={{ p: 4 }}>
-          <Typography variant="h4" component="h1" gutterBottom align="center">
-            {t("login.title")}
-          </Typography>
-          <Typography
-            variant="body2"
-            color="text.secondary"
-            gutterBottom
-            align="center"
-            sx={{ mb: 3 }}
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              mb: 3,
+            }}
           >
-            {t("login.subtitle")}
-          </Typography>
+            <Avatar
+              src={appProps.logoUrl ?? defaultLogoUrl}
+              alt={appProps.appName}
+              sx={{ width: 80, height: 80, mb: 2 }}
+            />
+            <Typography variant="h5" component="div" fontWeight="bold">
+              {appProps.appName}
+            </Typography>
+          </Box>
+
 
           {isConfigError && (
             <Alert severity="error" sx={{ mb: 2 }}>
