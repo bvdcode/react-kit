@@ -1,5 +1,6 @@
 import { createRoot } from "react-dom/client";
 import { AppShell } from "../../package/src/AppShell";
+import type { UserInfo, TokenPair } from "../../package/src/types";
 
 const App = () => {
   return (
@@ -15,7 +16,7 @@ const App = () => {
       <AppShell
         appName="React Kit"
         authConfig={{
-          login: async (credentials) => {
+          login: async (credentials): Promise<TokenPair> => {
             const url = "http://localhost:5182/api/v1/auth/login";
             const response = await fetch(url, {
               method: "POST",
@@ -31,15 +32,11 @@ const App = () => {
           },
           getUserInfo: async (axiosInstance) => {
             const url = "http://localhost:5182/api/v1/users/me";
-            const response = await axiosInstance.get(url);
+            const response = await axiosInstance.get<UserInfo>(url);
             return response.data;
           },
-          onRefreshToken(refreshToken) {
-            alert("Refreshing token: " + refreshToken);
-            return Promise.resolve({
-              accessToken: "new-fake-access-token",
-              refreshToken: "new-fake-refresh-token",
-            });
+          onRefreshToken(refreshToken): Promise<TokenPair> {
+            throw new Error("Function not implemented.");
           },
         }}
         pages={[
