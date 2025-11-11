@@ -4,7 +4,9 @@ import React, { useEffect } from "react";
 import type { ReactKitProps } from "./types";
 import "react-toastify/dist/ReactToastify.css";
 import AppLayout from "./components/AppLayout";
+import "react-toastify/dist/ReactToastify.css";
 import { useAuthStore } from "./store/authStore";
+import { ConfirmProvider } from "material-ui-confirm";
 import { ThemeContextProvider } from "./contexts/ThemeContext";
 
 export const AppShell: React.FC<ReactKitProps> = (props) => {
