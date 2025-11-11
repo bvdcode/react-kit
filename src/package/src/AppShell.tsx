@@ -21,7 +21,9 @@ export const AppShell: React.FC<ReactKitProps> = (props) => {
 
   return (
     <ThemeContextProvider>
-      <AppLayout {...props} />
+      <ConfirmProvider>
+        <AppLayout {...props} />
+      </ConfirmProvider>
     </ThemeContextProvider>
   );
 };

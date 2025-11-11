@@ -1,4 +1,5 @@
 import { ThemeMode } from "../types";
+import { ToastContainer } from "react-toastify";
 import { darkTheme } from "../themes/darkTheme";
 import { lightTheme } from "../themes/lightTheme";
 import { useThemeStore } from "../store/themeStore";
@@ -42,6 +43,7 @@ export const ThemeContextProvider = ({
 
   return (
     <ThemeContext.Provider value={contextValue}>
+      <ToastContainer theme={mode} />
       <ThemeProvider theme={theme}>
         <CssBaseline />
         {children}
