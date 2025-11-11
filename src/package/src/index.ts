@@ -1,4 +1,3 @@
-import "./i18n.ts";
 export * from "./types";
 export { default as AppShell } from "./AppShell";
 export { useAuthStore } from "./store/authStore";
