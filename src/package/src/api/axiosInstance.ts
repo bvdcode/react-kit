@@ -114,6 +114,7 @@ export class AuthenticatedAxiosInstance {
 
             const tokens = await this.props.authConfig.onRefreshToken(
               refreshToken,
+              this.axiosInstance,
             );
             this.accessToken = tokens.accessToken;
             this.setTokensInStore(tokens);

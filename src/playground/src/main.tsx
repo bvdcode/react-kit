@@ -16,39 +16,25 @@ const App = () => {
       <AppShell
         appName="React Kit"
         authConfig={{
-          login: async (credentials): Promise<TokenPair> => {
-            const url = "http://localhost:5182/api/v1/auth/login";
-            const response = await fetch(url, {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify(credentials),
-            });
-            if (!response.ok) {
-              throw new Error("Login failed");
-            }
-            return response.json();
-          },
-          getUserInfo: async (axiosInstance) => {
-            const url = "http://localhost:5182/api/v1/users/me";
-            const response = await axiosInstance.get<UserInfo>(url);
+          login: async (credentials, axiosInstance) => {
+            const response = await axiosInstance.post<TokenPair>(
+              "http://localhost:5182/api/v1/auth/login",
+              credentials,
+            );
             return response.data;
           },
-          onRefreshToken(refreshToken): Promise<TokenPair> {
-            const url = "http://localhost:5182/api/v1/auth/refresh";
-            return fetch(url, {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({ refreshToken }),
-            }).then((response) => {
-              if (!response.ok) {
-                throw new Error("Token refresh failed");
-              }
-              return response.json();
-            });
+          getUserInfo: async (axiosInstance) => {
+            const response = await axiosInstance.get<UserInfo>(
+              "http://localhost:5182/api/v1/users/me",
+            );
+            return response.data;
+          },
+          onRefreshToken: async (refreshToken, axiosInstance) => {
+            const response = await axiosInstance.post<TokenPair>(
+              "http://localhost:5182/api/v1/auth/refresh",
+              { refreshToken },
+            );
+            return response.data;
           },
         }}
         pages={[

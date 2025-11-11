@@ -31,7 +31,10 @@ export class ApiService {
       throw new Error("onLogin handler is not configured");
     }
 
-    const tokens = await this.config.authConfig.login(credentials);
+    const tokens = await this.config.authConfig.login(
+      credentials,
+      this.getAxios(),
+    );
     this.authAxios.setTokens(tokens);
     return tokens;
   }
