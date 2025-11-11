@@ -6,7 +6,8 @@
     "password": "Password",
     "signIn": "Sign In",
     "unknownError": "An unknown error occurred. Please try again.",
-    "sessionExpired": "Your session has expired. Please sign in again."
+    "sessionExpired": "Your session has expired. Please sign in again.",
+    "configError": "Authentication is not configured. Please provide authConfig with onLogin handler in AppShell props."
   },
   "files": {
     "title": "Files",

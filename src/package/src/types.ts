@@ -15,7 +15,6 @@ export type ReactKitPage = {
   name?: string;
   icon?: ReactNode;
   component: ReactNode;
-  protected?: boolean;
 };
 
 export type ThemeMode = "light" | "dark";

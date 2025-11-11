@@ -10,51 +10,43 @@ const AppLayout: FunctionComponent<ReactKitProps> = (props) => {
   return (
     <BrowserRouter basename={props.basename}>
       <FaviconManager faviconUrl={props.logoUrl ?? defaultLogoUrl} />
-      <Routes>
-        <Route
-          element={
-            <Box
-              display="flex"
-              width="100%"
-              height="100%"
-              flexDirection="column"
-            >
-              <NavigationBar {...props} />
-              <Box component="main" sx={{ flex: 1, overflow: "auto", p: 3 }}>
-                <Routes>
-                  {props.pages.map((page) => {
-                    const element = page.protected ? (
-                      <ProtectedContent>{page.component}</ProtectedContent>
-                    ) : (
-                      page.component
-                    );
-                    return (
+      <ProtectedContent>
+        <Routes>
+          <Route
+            element={
+              <Box
+                display="flex"
+                width="100%"
+                height="100%"
+                flexDirection="column"
+              >
+                <NavigationBar {...props} />
+                <Box component="main" sx={{ flex: 1, overflow: "auto", p: 3 }}>
+                  <Routes>
+                    {props.pages.map((page) => (
                       <Route
                         key={page.route}
                         path={page.route}
-                        element={element}
+                        element={page.component}
                       />
-                    );
-                  })}
-                </Routes>
+                    ))}
+                  </Routes>
+                </Box>
               </Box>
-            </Box>
-          }
-        >
-          {props.pages.map((page) => {
-            const element = page.protected ? (
-              <ProtectedContent>{page.component}</ProtectedContent>
-            ) : (
-              page.component
-            );
-            return (
-              <Route key={page.route} path={page.route} element={element} />
-            );
-          })}
-        </Route>
+            }
+          >
+            {props.pages.map((page) => (
+              <Route
+                key={page.route}
+                path={page.route}
+                element={page.component}
+              />
+            ))}
+          </Route>
 
-        <Route path="*" element={<NotFound />} />
-      </Routes>
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </ProtectedContent>
     </BrowserRouter>
   );
 };

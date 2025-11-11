@@ -16,11 +16,15 @@ import { AuthError } from "../types";
 const LoginPage: React.FC = () => {
   const { t } = useTranslation();
   const login = useAuthStore((s) => s.login);
+  const apiService = useAuthStore((s) => s.apiService);
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+
+  // Check if onLogin handler is configured
+  const isConfigError = !apiService;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -49,7 +53,8 @@ const LoginPage: React.FC = () => {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        flex: 1,
+        minHeight: "100vh",
+        width: "100vw",
         bgcolor: "background.default",
         p: 2,
       }}
@@ -69,6 +74,12 @@ const LoginPage: React.FC = () => {
             {t("login.subtitle")}
           </Typography>
 
+          {isConfigError && (
+            <Alert severity="error" sx={{ mb: 2 }}>
+              {t("login.configError")}
+            </Alert>
+          )}
+
           {error && (
             <Alert severity="error" sx={{ mb: 2 }}>
               {error}
@@ -83,7 +94,7 @@ const LoginPage: React.FC = () => {
               margin="normal"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              disabled={loading}
+              disabled={loading || isConfigError}
               autoFocus
               autoComplete="username"
               required
@@ -96,7 +107,7 @@ const LoginPage: React.FC = () => {
               margin="normal"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              disabled={loading}
+              disabled={loading || isConfigError}
               autoComplete="current-password"
               required
             />
@@ -105,7 +116,7 @@ const LoginPage: React.FC = () => {
               variant="contained"
               fullWidth
               size="large"
-              disabled={loading}
+              disabled={loading || isConfigError}
               sx={{ mt: 3 }}
             >
               {loading ? (
