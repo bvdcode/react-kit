@@ -29,14 +29,14 @@ const App = () => {
             );
             return response.data;
           },
-          onRefreshToken: async (refreshToken, axiosInstance) => {
+          refreshToken: async (refreshToken, axiosInstance) => {
             const response = await axiosInstance.post<TokenPair>(
               "http://localhost:5182/api/v1/auth/refresh",
               { refreshToken },
             );
             return response.data;
           },
-          onLogout: async (refreshToken, axiosInstance) => {
+          logout: async (refreshToken, axiosInstance) => {
             if (refreshToken) {
               await axiosInstance.post(
                 "http://localhost:5182/api/v1/auth/revoke",

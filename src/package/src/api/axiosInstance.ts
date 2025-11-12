@@ -108,11 +108,11 @@ export class AuthenticatedAxiosInstance {
 
           try {
             // Try to refresh the token
-            if (!this.props.authConfig?.onRefreshToken) {
+            if (!this.props.authConfig?.refreshToken) {
               throw new Error("onRefreshToken handler is not configured");
             }
 
-            const tokens = await this.props.authConfig.onRefreshToken(
+            const tokens = await this.props.authConfig.refreshToken(
               refreshToken,
               this.axiosInstance,
             );
@@ -145,8 +145,8 @@ export class AuthenticatedAxiosInstance {
   private handleUnauthorized() {
     const refreshToken = this.getRefreshToken();
 
-    if (this.props.authConfig?.onLogout) {
-      const result = this.props.authConfig.onLogout(
+    if (this.props.authConfig?.logout) {
+      const result = this.props.authConfig.logout(
         refreshToken,
         this.axiosInstance,
       );

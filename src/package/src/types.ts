@@ -36,12 +36,12 @@ export interface AuthConfig {
     credentials: LoginCredentials,
     axiosInstance: AxiosInstance,
   ) => Promise<TokenPair>;
-  onRefreshToken?: (
+  refreshToken?: (
     refreshToken: string,
     axiosInstance: AxiosInstance,
   ) => Promise<TokenPair>;
   getUserInfo?: (axiosInstance: AxiosInstance) => Promise<UserInfo>;
-  onLogout?: (
+  logout?: (
     refreshToken: string | null,
     axiosInstance: AxiosInstance,
   ) => Promise<void> | void;
