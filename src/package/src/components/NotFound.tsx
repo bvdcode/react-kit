@@ -3,10 +3,12 @@ import { Box, Button, Container, Typography, useTheme } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import HomeIcon from "@mui/icons-material/Home";
 import SearchOffIcon from "@mui/icons-material/SearchOff";
+import { useTranslation } from "react-i18next";
 
 const NotFound: React.FC = () => {
   const navigate = useNavigate();
   const theme = useTheme();
+  const { t } = useTranslation();
 
   return (
     <Box
@@ -73,7 +75,7 @@ const NotFound: React.FC = () => {
               color: "text.primary",
             }}
           >
-            Page Not Found
+            {t("notFound.title")}
           </Typography>
 
           <Typography
@@ -85,8 +87,7 @@ const NotFound: React.FC = () => {
               mx: "auto",
             }}
           >
-            Oops! The page you're looking for doesn't exist. It might have been
-            moved or deleted.
+            {t("notFound.description")}
           </Typography>
 
           <Button
@@ -107,7 +108,7 @@ const NotFound: React.FC = () => {
               },
             }}
           >
-            Go Back Home
+            {t("notFound.goHome")}
           </Button>
         </Box>
       </Container>

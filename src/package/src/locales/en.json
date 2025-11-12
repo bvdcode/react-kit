@@ -15,6 +15,15 @@
     "language": "Change language",
     "logout": "Logout"
   },
+  "notFound": {
+    "title": "Page Not Found",
+    "description": "Oops! The page you're looking for doesn't exist. It might have been moved or deleted.",
+    "goHome": "Go Back Home"
+  },
+  "errors": {
+    "noPagesTitle": "No Pages Configured",
+    "noPagesDescription": "You haven't added any pages to your application. Please add at least one page to the <strong>pages</strong> prop of the <strong>AppShell</strong> component."
+  },
   "files": {
     "title": "Files",
     "subtitle": "Manage and browse your files here.",
