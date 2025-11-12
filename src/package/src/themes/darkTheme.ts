@@ -64,18 +64,6 @@ export const darkTheme = createTheme({
           width: 10px;
           height: 10px;
         }
-        *::-webkit-scrollbar-track {
-          background: rgba(255, 255, 255, 0.08);
-          border-radius: 9999px;
-        }
-        *::-webkit-scrollbar-thumb {
-          background-color: rgba(80, 139, 210, 0.65);
-          border-radius: 9999px;
-          border: 2px solid rgba(33, 37, 41, 0.95);
-        }
-        *::-webkit-scrollbar-thumb:hover {
-          background-color: rgba(80, 139, 210, 0.8);
-        }
       `,
     },
   },

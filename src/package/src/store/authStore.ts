@@ -2,13 +2,14 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { getAppPrefix } from "../config/appPrefix";
 import type { LoginCredentials, TokenPair } from "../types";
+import type { ApiService } from "../api";
 
 interface AuthStore {
   refreshToken: string | null;
   accessToken: string | null;
-  apiService: any | null;
+  apiService: ApiService | null;
   
-  setApiService: (service: any) => void;
+  setApiService: (service: ApiService) => void;
   setRefreshToken: (token: string) => void;
   setAccessToken: (token: string) => void;
   getRefreshToken: () => string | null;
@@ -23,9 +24,9 @@ export const useAuthStore = create<AuthStore>()(
     (set, get) => ({
       refreshToken: null,
       accessToken: null,
-      apiService: null,
+  apiService: null,
       
-      setApiService: (service: any) => set({ apiService: service }),
+  setApiService: (service: ApiService) => set({ apiService: service }),
       
       setRefreshToken: (token: string) => set({ refreshToken: token }),
       

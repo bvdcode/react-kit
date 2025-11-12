@@ -4,7 +4,7 @@ import { FunctionComponent } from "react";
 import FaviconManager from "./FaviconManager";
 import defaultLogoUrl from "../assets/default-logo.svg";
 import { NavigationBar, NotFound, ProtectedContent } from ".";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, Outlet } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 const AppLayout: FunctionComponent<ReactKitProps> = (props) => {
@@ -50,15 +50,7 @@ const AppLayout: FunctionComponent<ReactKitProps> = (props) => {
               >
                 <NavigationBar {...props} />
                 <Box component="main" sx={{ flex: 1, overflow: "auto", p: 3 }}>
-                  <Routes>
-                    {props.pages.map((page) => (
-                      <Route
-                        key={page.route}
-                        path={page.route}
-                        element={page.component}
-                      />
-                    ))}
-                  </Routes>
+                  <Outlet />
                 </Box>
               </Box>
             }
@@ -70,9 +62,8 @@ const AppLayout: FunctionComponent<ReactKitProps> = (props) => {
                 element={page.component}
               />
             ))}
+            <Route path="*" element={<NotFound />} />
           </Route>
-
-          <Route path="*" element={<NotFound />} />
         </Routes>
       </ProtectedContent>
     </BrowserRouter>
