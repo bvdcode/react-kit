@@ -57,7 +57,9 @@ export class ApiService {
     const refreshToken = this.authAxios.getRefreshToken();
 
     if (this.config.authConfig?.logout) {
-      await this.config.authConfig.logout(refreshToken, this.getAxios());
+      try {
+        await this.config.authConfig.logout(refreshToken, this.getAxios());
+      } catch {}
     }
 
     this.authAxios.clearTokens();
