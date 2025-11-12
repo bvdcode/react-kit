@@ -2,12 +2,19 @@ import { Box } from "@mui/material";
 import { createRoot } from "react-dom/client";
 import { AppShell } from "../../package/src/AppShell";
 import type { UserInfo, TokenPair } from "../../package/src/types";
+import enTranslations from "./locales/en.json";
+import ruTranslations from "./locales/ru.json";
+import { HomePage } from "./components/HomePage";
 
 const App = () => {
   return (
     <div>
       <AppShell
         appName="React Kit"
+        translations={{
+          en: enTranslations,
+          ru: ruTranslations,
+        }}
         authConfig={{
           login: async (credentials, axiosInstance) => {
             const response = await axiosInstance.post<TokenPair>(
@@ -42,11 +49,7 @@ const App = () => {
           {
             route: "/",
             name: "Home",
-            component: (
-              <div>
-                Home Page Content <a href="/dawdaw">no</a>
-              </div>
-            ),
+            component: <HomePage />,
             icon: <div>🏠</div>,
           },
           {

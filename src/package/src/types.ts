@@ -1,6 +1,12 @@
 import type { ReactNode } from "react";
 import type { AxiosInstance } from "axios";
 
+export type TranslationResources = {
+  [language: string]: {
+    [namespace: string]: Record<string, any>;
+  };
+};
+
 export type ReactKitProps = {
   appName: string;
   logoUrl?: string;
@@ -8,6 +14,7 @@ export type ReactKitProps = {
   basename?: string;
   pages: ReactKitPage[];
   authConfig?: AuthConfig;
+  translations?: TranslationResources;
 };
 
 export type ReactKitPage = {

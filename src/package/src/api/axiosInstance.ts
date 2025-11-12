@@ -109,7 +109,7 @@ export class AuthenticatedAxiosInstance {
           try {
             // Try to refresh the token
             if (!this.props.authConfig?.refreshToken) {
-              throw new Error("onRefreshToken handler is not configured");
+              throw new Error("refreshToken handler is not configured");
             }
 
             const tokens = await this.props.authConfig.refreshToken(

@@ -1,0 +1,10 @@
+{
+  "myApp": {
+    "welcome": "Welcome to my app!",
+    "greeting": "Hello, {{name}}!",
+    "home": {
+      "title": "Home Page",
+      "description": "This is the home page content"
+    }
+  }
+}
