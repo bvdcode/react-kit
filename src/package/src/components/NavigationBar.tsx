@@ -1,10 +1,10 @@
-import { Box, AppBar, Toolbar } from "@mui/material";
-import { ReactKitProps } from "../types";
-import { FunctionComponent } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import Branding from "./Branding";
 import NavTabs from "./NavTabs";
 import UserMenu from "./UserMenu";
+import Branding from "./Branding";
+import { ReactKitProps } from "../types";
+import { FunctionComponent } from "react";
+import { Box, AppBar, Toolbar } from "@mui/material";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const NavigationBar: FunctionComponent<ReactKitProps> = ({
   pages,

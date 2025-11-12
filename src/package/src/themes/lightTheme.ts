@@ -53,29 +53,9 @@ export const lightTheme = createTheme({
           filter: invert(85%) sepia(10%) saturate(300%) hue-rotate(180deg) brightness(105%);
           opacity: 0.8;
         }
-        html {
-          scrollbar-width: thin;
-          scrollbar-color: rgba(55, 113, 190, 0.45) rgba(52, 58, 64, 0.12);
-        }
-        *, *::before, *::after {
-          scrollbar-width: thin;
-        }
-        *::-webkit-scrollbar {
-          width: 10px;
-          height: 10px;
-        }
-        *::-webkit-scrollbar-track {
-          background: rgba(52, 58, 64, 0.12);
-          border-radius: 9999px;
-        }
-        *::-webkit-scrollbar-thumb {
-          background-color: rgba(55, 113, 190, 0.65);
-          border-radius: 9999px;
-          border: 2px solid rgba(248, 249, 250, 0.9);
-        }
-        *::-webkit-scrollbar-thumb:hover {
-          background-color: rgba(55, 113, 190, 0.8);
-        }
+        /* Prefer native OS theming for scrollbars and form controls */
+        html { color-scheme: light; }
+        :root { color-scheme: light; }
       `,
     },
   },

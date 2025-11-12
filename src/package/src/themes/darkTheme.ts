@@ -53,17 +53,9 @@ export const darkTheme = createTheme({
         .theme-light input[type="date"]::-webkit-calendar-picker-indicator {
           filter: invert(25%) sepia(16%) saturate(500%) hue-rotate(220deg) brightness(95%);
         }
-        html {
-          scrollbar-width: thin;
-          scrollbar-color: rgba(80, 139, 210, 0.55) rgba(255, 255, 255, 0.08);
-        }
-        *, *::before, *::after {
-          scrollbar-width: thin;
-        }
-        *::-webkit-scrollbar {
-          width: 10px;
-          height: 10px;
-        }
+        /* Prefer native OS theming for scrollbars and form controls */
+        html { color-scheme: dark; }
+        :root { color-scheme: dark; }
       `,
     },
   },
