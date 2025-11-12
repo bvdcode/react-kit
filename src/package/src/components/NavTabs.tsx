@@ -1,5 +1,6 @@
-import { Box, Tabs, Tab } from "@mui/material";
+import { isValidElement } from "react";
 import type { ReactKitPage } from "../types";
+import { Box, Tabs, Tab, Tooltip } from "@mui/material";
 
 export type NavTabsProps = {
   pages: ReactKitPage[];
@@ -9,8 +10,12 @@ export type NavTabsProps = {
 
 export default function NavTabs({ pages, currentPath, onNavigate }: NavTabsProps) {
   const currentIndex = pages.findIndex((p) => p.route === currentPath);
+  if (!pages || pages.length <= 1) {
+    return null;
+  }
+
   return (
-    <Box sx={{ display: "flex", justifyContent: "center", minWidth: 0, px: 1 }}>
+    <Box sx={{ display: "flex", justifyContent: "center", minWidth: 0 }}>
       <Tabs
         value={currentIndex !== -1 ? currentIndex : false}
         textColor="inherit"
@@ -23,9 +28,20 @@ export default function NavTabs({ pages, currentPath, onNavigate }: NavTabsProps
           }
         }}
       >
-        {pages.map((page) => (
-          <Tab key={page.route} label={page.name} />
-        ))}
+        {pages.map((page) => {
+          const iconEl = isValidElement(page.icon) ? page.icon : undefined;
+          const labelText = page.name || page.route;
+          if (iconEl) {
+            return (
+              <Tooltip key={page.route} title={labelText} arrow>
+                <span>
+                  <Tab icon={iconEl} aria-label={labelText} />
+                </span>
+              </Tooltip>
+            );
+          }
+          return <Tab key={page.route} label={labelText} />;
+        })}
       </Tabs>
     </Box>
   );
