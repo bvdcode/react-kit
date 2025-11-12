@@ -8,10 +8,14 @@ export type NavTabsProps = {
   onNavigate: (route: string) => void;
 };
 
-export default function NavTabs({ pages, currentPath, onNavigate }: NavTabsProps) {
+export default function NavTabs({
+  pages,
+  currentPath,
+  onNavigate,
+}: NavTabsProps) {
   const currentIndex = pages.findIndex((p) => p.route === currentPath);
   if (!pages || pages.length <= 1) {
-    return null;
+    return <Box sx={{ minWidth: 0 }} />;
   }
 
   return (
