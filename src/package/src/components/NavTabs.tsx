@@ -35,16 +35,22 @@ export default function NavTabs({
         {pages.map((page) => {
           const iconEl = isValidElement(page.icon) ? page.icon : undefined;
           const labelText = page.name || page.route;
-          if (iconEl) {
-            return (
-              <Tooltip key={page.route} title={labelText} arrow>
-                <span>
-                  <Tab icon={iconEl} aria-label={labelText} />
-                </span>
-              </Tooltip>
-            );
-          }
-          return <Tab key={page.route} label={labelText} />;
+
+          return (
+            <Tab
+              key={page.route}
+              aria-label={labelText}
+              label={!iconEl ? labelText : undefined}
+              icon={
+                iconEl && (
+                  <Tooltip title={labelText} arrow>
+                    {iconEl}
+                  </Tooltip>
+                )
+              }
+              sx={{ minWidth: 40, px: 1 }}
+            />
+          );
         })}
       </Tabs>
     </Box>
