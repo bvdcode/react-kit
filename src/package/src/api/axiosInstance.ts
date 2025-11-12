@@ -45,7 +45,7 @@ export class AuthenticatedAxiosInstance {
     }
   }
 
-  private getRefreshToken(): string | null {
+  public getRefreshToken(): string | null {
     return useAuthStore.getState().getRefreshToken();
   }
 
@@ -143,17 +143,22 @@ export class AuthenticatedAxiosInstance {
   }
 
   private handleUnauthorized() {
-    this.accessToken = null;
-    this.clearTokensInStore();
+    const refreshToken = this.getRefreshToken();
 
     if (this.props.authConfig?.onLogout) {
-      const result = this.props.authConfig.onLogout();
+      const result = this.props.authConfig.onLogout(
+        refreshToken,
+        this.axiosInstance,
+      );
       if (result instanceof Promise) {
         result.catch((err: unknown) => {
           console.error("Logout handler failed:", err);
         });
       }
     }
+
+    this.accessToken = null;
+    this.clearTokensInStore();
   }
 
   public setAccessToken(accessToken: string): void {

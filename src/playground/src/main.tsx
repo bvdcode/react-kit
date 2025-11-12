@@ -36,6 +36,14 @@ const App = () => {
             );
             return response.data;
           },
+          onLogout: async (refreshToken, axiosInstance) => {
+            if (refreshToken) {
+              await axiosInstance.post(
+                "http://localhost:5182/api/v1/auth/revoke",
+                { refreshToken },
+              );
+            }
+          },
         }}
         pages={[
           {

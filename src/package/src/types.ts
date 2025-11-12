@@ -41,7 +41,10 @@ export interface AuthConfig {
     axiosInstance: AxiosInstance,
   ) => Promise<TokenPair>;
   getUserInfo?: (axiosInstance: AxiosInstance) => Promise<UserInfo>;
-  onLogout?: () => Promise<void> | void;
+  onLogout?: (
+    refreshToken: string | null,
+    axiosInstance: AxiosInstance,
+  ) => Promise<void> | void;
 }
 
 export interface LoginCredentials {

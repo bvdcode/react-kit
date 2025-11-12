@@ -54,11 +54,13 @@ export class ApiService {
    * Logout - clears tokens and calls the handler
    */
   public async logout(): Promise<void> {
-    this.authAxios.clearTokens();
+    const refreshToken = this.authAxios.getRefreshToken();
 
     if (this.config.authConfig?.onLogout) {
-      await this.config.authConfig.onLogout();
+      await this.config.authConfig.onLogout(refreshToken, this.getAxios());
     }
+
+    this.authAxios.clearTokens();
   }
 
   /**
