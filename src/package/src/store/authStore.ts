@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import { getAppPrefix } from "../config/appPrefix";
 import type { LoginCredentials, TokenPair } from "../types";
 
 interface AuthStore {
@@ -58,7 +59,7 @@ export const useAuthStore = create<AuthStore>()(
       },
     }),
     {
-      name: "react-kit-auth",
+      name: `${getAppPrefix()}-auth`,
       partialize: (state) => ({ 
         refreshToken: state.refreshToken 
       }),

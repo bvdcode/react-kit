@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { ThemeMode } from "../types";
 import { persist } from "zustand/middleware";
+import { getAppPrefix } from "../config/appPrefix";
 
 interface ThemeStore {
   mode: ThemeMode;
@@ -15,7 +16,7 @@ export const useThemeStore = create<ThemeStore>()(
         set((state) => ({ mode: state.mode === "light" ? "dark" : "light" })),
     }),
     {
-      name: "react-kit-theme",
+      name: `${getAppPrefix()}-theme`,
     },
   ),
 );
