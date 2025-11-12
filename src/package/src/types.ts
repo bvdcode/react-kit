@@ -15,6 +15,7 @@ export type ReactKitProps = {
   pages: ReactKitPage[];
   authConfig?: AuthConfig;
   translations?: TranslationResources;
+  themeOverrides?: ThemeOverrides;
 };
 
 export type ReactKitPage = {
@@ -25,6 +26,18 @@ export type ReactKitPage = {
 };
 
 export type ThemeMode = "light" | "dark";
+
+export type SimplePaletteOverrides = {
+  primary?: string; // hex or css color
+  secondary?: string; // hex or css color
+  background?: string; // base page background (maps to palette.background.default)
+  text?: string; // base text color (maps to palette.text.primary)
+};
+
+export type ThemeOverrides = {
+  light?: SimplePaletteOverrides;
+  dark?: SimplePaletteOverrides;
+};
 
 export interface TokenPair {
   accessToken: string;
@@ -60,10 +73,7 @@ export interface LoginCredentials {
 }
 
 export class AuthError extends Error {
-  constructor(
-    message: string,
-    public code?: string,
-  ) {
+  constructor(message: string, public code?: string) {
     super(message);
     this.name = "AuthError";
   }

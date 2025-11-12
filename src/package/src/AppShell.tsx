@@ -31,7 +31,7 @@ export const AppShell: React.FC<ReactKitProps> = (props) => {
   }, [props.translations]);
 
   return (
-    <ThemeContextProvider>
+    <ThemeContextProvider themeOverrides={props.themeOverrides}>
       <ConfirmProvider>
         <Box position="absolute" top={0} left={0} height="100%" width="100%">
           <AppLayout {...props} />
