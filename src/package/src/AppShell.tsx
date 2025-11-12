@@ -1,5 +1,6 @@
 import "./i18n";
 import { ApiService } from "./api";
+import { Box } from "@mui/material";
 import React, { useEffect } from "react";
 import type { ReactKitProps } from "./types";
 import "react-toastify/dist/ReactToastify.css";
@@ -22,7 +23,9 @@ export const AppShell: React.FC<ReactKitProps> = (props) => {
   return (
     <ThemeContextProvider>
       <ConfirmProvider>
-        <AppLayout {...props} />
+        <Box position="absolute" top={0} left={0} height="100%" width="100%">
+          <AppLayout {...props} />
+        </Box>
       </ConfirmProvider>
     </ThemeContextProvider>
   );

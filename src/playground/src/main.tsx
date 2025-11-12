@@ -1,18 +1,11 @@
+import { Box } from "@mui/material";
 import { createRoot } from "react-dom/client";
 import { AppShell } from "../../package/src/AppShell";
 import type { UserInfo, TokenPair } from "../../package/src/types";
 
 const App = () => {
   return (
-    <div
-      style={{
-        position: "absolute",
-        top: 0,
-        left: 0,
-        height: "100%",
-        width: "100%",
-      }}
-    >
+    <div>
       <AppShell
         appName="React Kit"
         authConfig={{
@@ -57,9 +50,25 @@ const App = () => {
             icon: <div>🏠</div>,
           },
           {
+            route: "/long",
+            name: "Long Content",
+            component: (
+              <div>
+                {Array.from({ length: 100 }, (_, i) => (
+                  <p key={i}>This is line {i + 1} of long content.</p>
+                ))}
+              </div>
+            ),
+            icon: <div>🏠</div>,
+          },
+          {
             route: "/files",
             name: "Files",
-            component: <div>Files Page Content</div>,
+            component: (
+              <Box display="flex" width="100%" height="100%" bgcolor="red">
+                Test
+              </Box>
+            ),
             icon: <div>📁</div>,
           },
         ]}

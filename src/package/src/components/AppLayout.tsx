@@ -7,6 +7,8 @@ import { NavigationBar, NotFound, ProtectedContent } from ".";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 const AppLayout: FunctionComponent<ReactKitProps> = (props) => {
+  const hasPages = Array.isArray(props.pages) && props.pages.length > 0;
+
   return (
     <BrowserRouter basename={props.basename}>
       <FaviconManager faviconUrl={props.logoUrl ?? defaultLogoUrl} />
@@ -22,26 +24,48 @@ const AppLayout: FunctionComponent<ReactKitProps> = (props) => {
               >
                 <NavigationBar {...props} />
                 <Box component="main" sx={{ flex: 1, overflow: "auto", p: 3 }}>
-                  <Routes>
-                    {props.pages.map((page) => (
-                      <Route
-                        key={page.route}
-                        path={page.route}
-                        element={page.component}
-                      />
-                    ))}
-                  </Routes>
+                  {hasPages ? (
+                    <Routes>
+                      {props.pages.map((page) => (
+                        <Route
+                          key={page.route}
+                          path={page.route}
+                          element={page.component}
+                        />
+                      ))}
+                    </Routes>
+                  ) : (
+                    <Box
+                      sx={{
+                        height: "100%",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        color: "text.secondary",
+                      }}
+                    >
+                      <Box sx={{ textAlign: "center" }}>
+                        <h2>Pages are not configured</h2>
+                        <div>
+                          You didn't add any pages to the application. Add
+                          entries to the <code>pages</code> prop of the
+                          AppShell to display routes.
+                        </div>
+                      </Box>
+                    </Box>
+                  )}
                 </Box>
               </Box>
             }
           >
-            {props.pages.map((page) => (
-              <Route
-                key={page.route}
-                path={page.route}
-                element={page.component}
-              />
-            ))}
+            {hasPages &&
+              props.pages.map((page) => (
+                <Route
+                  key={page.route}
+                  path={page.route}
+                  element={page.component}
+                />
+              ))}
           </Route>
 
           <Route path="*" element={<NotFound />} />
