@@ -76,9 +76,7 @@ const NavigationBar: FunctionComponent<ReactKitProps> = ({
     handlePopoverClose();
     await logout();
   };
-
-  // Language switching handled by LanguageSwitcher component
-
+  
   const open = Boolean(anchorEl);
 
   return (

@@ -2,20 +2,13 @@ import { Language } from "@mui/icons-material";
 import { ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
 import { useTranslation } from "react-i18next";
 
-/**
- * Cycles through all supported languages as configured in i18n (supportedLngs)
- */
 export default function LanguageSwitcher() {
   const { t, i18n } = useTranslation();
 
   const getSupportedLangs = (): string[] => {
     const raw = (i18n.options?.supportedLngs as unknown as string[]) || [];
-    // filter out special values like 'cimode'
     const filtered = raw.filter((l) => typeof l === "string" && l !== "cimode");
-    // fallback to current language if not configured
-    return filtered.length
-      ? filtered
-      : [i18n.resolvedLanguage || i18n.language];
+    return filtered.length ? filtered : [i18n.resolvedLanguage || i18n.language];
   };
 
   const handleClick = () => {

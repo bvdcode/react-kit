@@ -1,9 +1,7 @@
-// Minimal global prefix holder (no context, no store init required)
-// Normalization: lowercase, replace non-alphanumerics with hyphen, collapse repeats
-let prefix: string = "react-kit"; // default fallback
+let prefix: string = "react-kit";
 
 export function setAppPrefix(appName: string | undefined) {
-  if (!appName) return; // keep default
+  if (!appName) return;
   const normalized = appName
     .trim()
     .toLowerCase()
