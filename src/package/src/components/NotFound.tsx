@@ -1,9 +1,9 @@
 import React from "react";
-import { Box, Button, Container, Typography, useTheme } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import HomeIcon from "@mui/icons-material/Home";
 import SearchOffIcon from "@mui/icons-material/SearchOff";
-import { useTranslation } from "react-i18next";
+import { Box, Button, Container, Typography, useTheme } from "@mui/material";
 
 const NotFound: React.FC = () => {
   const navigate = useNavigate();
