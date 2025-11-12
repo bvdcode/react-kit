@@ -15,7 +15,7 @@ import {
   Divider,
   IconButton,
 } from "@mui/material";
-import { Logout, Language, LightMode, DarkMode } from "@mui/icons-material";
+import { Logout, LightMode, DarkMode } from "@mui/icons-material";
 import { ThemeToggle } from ".";
 import { ReactKitProps } from "../types";
 import { FunctionComponent, useState, useEffect } from "react";
@@ -24,6 +24,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useAuthStore } from "../store/authStore";
 import { useThemeStore } from "../store/themeStore";
 import { useTranslation } from "react-i18next";
+import LanguageSwitcher from "./LanguageSwitcher";
 
 const NavigationBar: FunctionComponent<ReactKitProps> = ({
   pages,
@@ -76,10 +77,7 @@ const NavigationBar: FunctionComponent<ReactKitProps> = ({
     await logout();
   };
 
-  const toggleLanguage = () => {
-    const newLang = i18n.language === "en" ? "ru" : "en";
-    i18n.changeLanguage(newLang);
-  };
+  // Language switching handled by LanguageSwitcher component
 
   const open = Boolean(anchorEl);
 
@@ -189,12 +187,7 @@ const NavigationBar: FunctionComponent<ReactKitProps> = ({
                   }
                 />
               </ListItemButton>
-              <ListItemButton onClick={toggleLanguage}>
-                <ListItemIcon>
-                  <Language />
-                </ListItemIcon>
-                <ListItemText primary={t("navigation.language")} />
-              </ListItemButton>
+              <LanguageSwitcher />
               <Divider />
               <ListItemButton onClick={handleLogout}>
                 <ListItemIcon>
