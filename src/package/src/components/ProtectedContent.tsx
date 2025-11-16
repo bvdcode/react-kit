@@ -2,6 +2,7 @@ import React from "react";
 import { useAuthStore } from "../store/authStore";
 import LoginPage from "./LoginPage";
 import type { ReactKitProps } from "../types";
+import { AxiosProvider } from "../contexts/AxiosContext";
 
 type Props = React.PropsWithChildren<{
   appProps: ReactKitProps;
@@ -16,7 +17,7 @@ const ProtectedContent: React.FC<Props> = ({ children, appProps }) => {
     return <LoginPage appProps={appProps} />;
   }
 
-  return <>{children}</>;
+  return <AxiosProvider>{children}</AxiosProvider>;
 };
 
 export default ProtectedContent;
