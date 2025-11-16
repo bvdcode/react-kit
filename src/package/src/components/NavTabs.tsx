@@ -28,7 +28,12 @@ export default function NavTabs({
         scrollButtons="auto"
         onChange={(_, value) => {
           if (value !== false) {
-            onNavigate(pages[value].route);
+            const page = pages[value];
+            if (page.url) {
+              window.location.assign(page.url);
+            } else {
+              onNavigate(page.route);
+            }
           }
         }}
       >

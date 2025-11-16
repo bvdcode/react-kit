@@ -20,6 +20,7 @@ export type ReactKitProps = {
 
 export type ReactKitPage = {
   route: string;
+  url?: string;
   name?: string;
   icon?: ReactNode;
   component: ReactNode;
