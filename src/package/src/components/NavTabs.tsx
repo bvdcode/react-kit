@@ -29,11 +29,7 @@ export default function NavTabs({
         onChange={(_, value) => {
           if (value !== false) {
             const page = pages[value];
-            if (page.url) {
-              window.location.assign(page.url);
-            } else {
-              onNavigate(page.route);
-            }
+            onNavigate(page.url ?? page.route);
           }
         }}
       >
