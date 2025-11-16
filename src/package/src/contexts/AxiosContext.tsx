@@ -6,10 +6,8 @@ const AxiosContext = createContext<AxiosInstance | undefined>(undefined);
 
 export function AxiosProvider({ children }: PropsWithChildren) {
   const apiService = useAuthStore((s) => s.apiService);
-  if (!apiService) {
-    throw new Error("AxiosProvider must be used after AppShell initializes ApiService (inside protected content)");
-  }
-  const axios = useMemo(() => apiService.getAxios(), [apiService]);
+  const axios = useMemo(() => apiService?.getAxios(), [apiService]);
+  if (!axios) return null;
   return <AxiosContext.Provider value={axios}>{children}</AxiosContext.Provider>;
 }
 
