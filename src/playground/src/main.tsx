@@ -16,6 +16,7 @@ const App = () => {
           ru: ruTranslations,
         }}
         authConfig={{
+          usernamePattern: /^[a-zA-Z0-9._@-]+$/,
           login: async (credentials, axiosInstance) => {
             const response = await axiosInstance.post<TokenPair>(
               "http://localhost:5182/api/v1/auth/login",
