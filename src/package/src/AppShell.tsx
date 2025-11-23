@@ -3,12 +3,12 @@ import i18n from "./i18n";
 import { ApiService } from "./api";
 import { Box } from "@mui/material";
 import React, { useEffect } from "react";
-import type { ReactKitProps } from "./types";
 import AppLayout from "./components/AppLayout";
 import "react-toastify/dist/ReactToastify.css";
 import { useAuthStore } from "./store/authStore";
 import { ConfirmProvider } from "material-ui-confirm";
 import { ThemeContextProvider } from "./contexts/ThemeContext";
+import type { ReactKitProps, AuthConfig, TokenPair, UserInfo } from "./types";
 
 export const AppShell: React.FC<ReactKitProps> = (props) => {
   const setApiService = useAuthStore((s) => s.setApiService);
@@ -17,7 +17,30 @@ export const AppShell: React.FC<ReactKitProps> = (props) => {
     if (props.authConfig) {
       const apiService = new ApiService(props);
       setApiService(apiService);
+      return;
     }
+
+    const stubTokens: TokenPair = {
+      accessToken: "stub-access-token",
+      refreshToken: "stub-refresh-token",
+    };
+    const stubUser: UserInfo = {
+      id: "stub-user-id",
+      username: "user",
+      displayName: "User",
+    };
+    const stubAuthConfig: AuthConfig = {
+      login: async () => stubTokens,
+      refreshToken: async () => stubTokens,
+      getUserInfo: async () => stubUser,
+      logout: () => {},
+    };
+
+    const apiService = new ApiService({ ...props, authConfig: stubAuthConfig });
+    setApiService(apiService);
+
+    useAuthStore.getState().setRefreshToken(stubTokens.refreshToken);
+    useAuthStore.getState().setAccessToken(stubTokens.accessToken);
   }, [props, setApiService]);
 
   useEffect(() => {
