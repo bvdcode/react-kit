@@ -53,6 +53,7 @@ export interface UserInfo {
 }
 
 export interface AuthConfig {
+  usernamePattern?: RegExp;
   login?: (
     credentials: LoginCredentials,
     axiosInstance: AxiosInstance,

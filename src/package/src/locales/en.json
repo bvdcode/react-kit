@@ -5,6 +5,7 @@
     "username": "Username",
     "password": "Password",
     "signIn": "Sign In",
+    "usernameInvalid": "Username format is invalid.",
     "unknownError": "An unknown error occurred. Please try again.",
     "sessionExpired": "Your session has expired. Please sign in again.",
     "configError": "Authentication is not configured. Please provide authConfig with onLogin handler in AppShell props."

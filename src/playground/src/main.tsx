@@ -1,10 +1,10 @@
 import { Box } from "@mui/material";
 import { createRoot } from "react-dom/client";
-import { AppShell } from "../../package/src/AppShell";
-import type { UserInfo, TokenPair } from "../../package/src/types";
 import enTranslations from "./locales/en.json";
 import ruTranslations from "./locales/ru.json";
 import { HomePage } from "./components/HomePage";
+import { AppShell } from "../../package/src/AppShell";
+import type { UserInfo, TokenPair } from "../../package/src/types";
 
 const App = () => {
   return (
@@ -16,6 +16,7 @@ const App = () => {
           ru: ruTranslations,
         }}
         authConfig={{
+          usernamePattern: /^[a-zA-Z0-9._-]+$/,
           login: async (credentials, axiosInstance) => {
             const response = await axiosInstance.post<TokenPair>(
               "http://localhost:5182/api/v1/auth/login",

@@ -12,12 +12,12 @@ import {
   InputAdornment,
   CircularProgress,
 } from "@mui/material";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
-import React, { useState } from "react";
-import { useAuthStore } from "../store/authStore";
+import React, { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useAuthStore } from "../store/authStore";
 import { AuthError, ReactKitProps } from "../types";
 import defaultLogoUrl from "../assets/default-logo.svg";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 type Props = {
   appProps: ReactKitProps;
@@ -33,15 +33,39 @@ const LoginPage: React.FC<Props> = ({ appProps }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [showValidation, setShowValidation] = useState(false);
 
   // Check if onLogin handler is configured
   const isConfigError = !apiService;
 
+  // Username validation using external regex if provided
+  const usernamePattern = appProps.authConfig?.usernamePattern;
+  const isUsernameInvalid = useMemo(() => {
+    if (!usernamePattern || username.length === 0) return false;
+    // Avoid stateful global regex issues
+    if ((usernamePattern as RegExp).global) {
+      (usernamePattern as RegExp).lastIndex = 0;
+    }
+    return !usernamePattern.test(username);
+  }, [usernamePattern, username]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
-    setLoading(true);
 
+    // Perform validation only on submit
+    if (usernamePattern) {
+      if ((usernamePattern as RegExp).global) {
+        (usernamePattern as RegExp).lastIndex = 0;
+      }
+      const invalid = !usernamePattern.test(username);
+      if (invalid) {
+        setShowValidation(true);
+        return;
+      }
+    }
+
+    setLoading(true);
     try {
       await login({ username, password });
       // No need to navigate - ProtectedContent will re-render
@@ -118,6 +142,12 @@ const LoginPage: React.FC<Props> = ({ appProps }) => {
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 disabled={loading || isConfigError}
+                error={showValidation && isUsernameInvalid}
+                helperText={
+                  showValidation && isUsernameInvalid
+                    ? t("login.usernameInvalid")
+                    : undefined
+                }
                 autoFocus
                 autoComplete="username"
                 required
