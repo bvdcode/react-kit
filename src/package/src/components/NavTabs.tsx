@@ -45,11 +45,13 @@ export default function NavTabs({
               icon={
                 iconEl && (
                   <Tooltip title={labelText} arrow>
-                    {iconEl}
+                    <Box component="span" sx={{ cursor: "pointer", display: "inline-flex" }}>
+                      {iconEl}
+                    </Box>
                   </Tooltip>
                 )
               }
-              sx={{ minWidth: 40, px: 1 }}
+              sx={{ minWidth: 40, px: 1, cursor: "pointer" }}
             />
           );
         })}
