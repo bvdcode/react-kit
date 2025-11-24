@@ -17,7 +17,6 @@ export const AppShell: React.FC<ReactKitProps> = (props) => {
     if (props.authConfig) {
       const apiService = new ApiService(props);
       setApiService(apiService);
-      apiService.ensureFreshTokens();
       return;
     }
 

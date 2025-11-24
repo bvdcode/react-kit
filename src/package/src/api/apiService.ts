@@ -16,20 +16,6 @@ export class ApiService {
     this.authAxios = new AuthenticatedAxiosInstance(config);
   }
 
-  public async ensureFreshTokens(): Promise<void> {
-    if (this.authAxios.getAccessToken()) return;
-    const refreshToken = this.authAxios.getRefreshToken();
-    if (!refreshToken) return;
-    const handler = this.config.authConfig?.refreshToken;
-    if (!handler) return;
-    try {
-      const tokens = await handler(refreshToken, this.getAxios());
-      this.authAxios.setTokens(tokens);
-    } catch {
-      this.authAxios.clearTokens();
-    }
-  }
-
   /**
    * Get axios instance for external code usage
    */

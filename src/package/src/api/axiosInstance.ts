@@ -58,31 +58,59 @@ export class AuthenticatedAxiosInstance {
     useAuthStore.getState().clearTokens();
   }
 
+  private async performRefresh(): Promise<string> {
+    const refreshToken = this.getRefreshToken();
+    if (!refreshToken) {
+      throw new Error("No refresh token available");
+    }
+    if (!this.props.authConfig?.refreshToken) {
+      throw new Error("refreshToken handler is not configured");
+    }
+
+    const tokens = await this.props.authConfig.refreshToken(
+      refreshToken,
+      this.axiosInstance,
+    );
+    this.accessToken = tokens.accessToken;
+    this.setTokensInStore(tokens);
+    return tokens.accessToken;
+  }
+
   private setupInterceptors() {
-    // Request interceptor - proactive refresh if we have only refresh token
+    // Request interceptor - queue if refresh in progress, perform refresh if no access token
     this.axiosInstance.interceptors.request.use(
       async (config: InternalAxiosRequestConfig) => {
-        if (!this.accessToken) {
-          const refreshToken = this.getRefreshToken();
-          const canRefresh = !!(
-            refreshToken && this.props.authConfig?.refreshToken && !isRefreshing
-          );
-          if (canRefresh) {
-            try {
-              isRefreshing = true;
-              const tokens = await this.props.authConfig!.refreshToken!(
-                refreshToken!,
-                this.axiosInstance,
-              );
-              this.accessToken = tokens.accessToken;
-              this.setTokensInStore(tokens);
-            } catch (e) {
-              // Ignore; let request proceed and 401 handler will clean up.
-            } finally {
-              isRefreshing = false;
-            }
+        // If refresh already running, wait in queue
+        if (isRefreshing) {
+          const token = await new Promise<string>((resolve, reject) => {
+            failedQueue.push({ resolve, reject });
+          });
+          if (config.headers) {
+            config.headers.Authorization = `Bearer ${token}`;
           }
+          return config;
         }
+
+        // If no access token but have refresh token - start refresh
+        if (!this.accessToken && this.getRefreshToken()) {
+          isRefreshing = true;
+          try {
+            const token = await this.performRefresh();
+            processQueue(null, token);
+            if (config.headers) {
+              config.headers.Authorization = `Bearer ${token}`;
+            }
+          } catch (error) {
+            processQueue(error, null);
+            this.handleUnauthorized();
+            return Promise.reject(error);
+          } finally {
+            isRefreshing = false;
+          }
+          return config;
+        }
+
+        // Normal case: have access token
         if (this.accessToken && config.headers) {
           config.headers.Authorization = `Bearer ${this.accessToken}`;
         }
@@ -101,8 +129,10 @@ export class AuthenticatedAxiosInstance {
 
         // If 401 error and not a retry request
         if (error.response?.status === 401 && !originalRequest._retry) {
+          originalRequest._retry = true;
+
+          // If refresh already running, wait in queue
           if (isRefreshing) {
-            // If refresh is already in progress, queue the request
             return new Promise((resolve, reject) => {
               failedQueue.push({ resolve, reject });
             })
@@ -115,41 +145,18 @@ export class AuthenticatedAxiosInstance {
               .catch((err) => Promise.reject(err));
           }
 
-          originalRequest._retry = true;
+          // Start refresh
           isRefreshing = true;
-
-          const refreshToken = this.getRefreshToken();
-          if (!refreshToken) {
-            // No refresh token - logout
-            isRefreshing = false;
-            processQueue(new Error("No refresh token available"), null);
-            this.handleUnauthorized();
-            return Promise.reject(error);
-          }
-
           try {
-            // Try to refresh the token
-            if (!this.props.authConfig?.refreshToken) {
-              throw new Error("refreshToken handler is not configured");
-            }
-
-            const tokens = await this.props.authConfig.refreshToken(
-              refreshToken,
-              this.axiosInstance,
-            );
-            this.accessToken = tokens.accessToken;
-            this.setTokensInStore(tokens);
-
-            // Process all queued requests
-            processQueue(null, tokens.accessToken);
+            const token = await this.performRefresh();
+            processQueue(null, token);
 
             // Retry the original request
             if (originalRequest.headers) {
-              originalRequest.headers.Authorization = `Bearer ${tokens.accessToken}`;
+              originalRequest.headers.Authorization = `Bearer ${token}`;
             }
             return this.axiosInstance(originalRequest);
           } catch (refreshError) {
-            // Refresh token failed - logout
             processQueue(refreshError, null);
             this.handleUnauthorized();
             return Promise.reject(refreshError);
