@@ -25,12 +25,16 @@ const processQueue = (error: any, token: string | null = null) => {
 
 export class AuthenticatedAxiosInstance {
   private axiosInstance: AxiosInstance;
+  private plainAxiosInstance: AxiosInstance;
   private props: ReactKitProps;
   private accessToken: string | null = null;
 
   constructor(props: ReactKitProps) {
     this.props = props;
     this.axiosInstance = axios.create({
+      baseURL: props.baseURL,
+    });
+    this.plainAxiosInstance = axios.create({
       baseURL: props.baseURL,
     });
 
@@ -69,7 +73,7 @@ export class AuthenticatedAxiosInstance {
 
     const tokens = await this.props.authConfig.refreshToken(
       refreshToken,
-      this.axiosInstance,
+      this.plainAxiosInstance,
     );
     this.accessToken = tokens.accessToken;
     this.setTokensInStore(tokens);
@@ -176,7 +180,7 @@ export class AuthenticatedAxiosInstance {
     if (this.props.authConfig?.logout) {
       const result = this.props.authConfig.logout(
         refreshToken,
-        this.axiosInstance,
+        this.plainAxiosInstance,
       );
       if (result instanceof Promise) {
         result.catch((err: unknown) => {
