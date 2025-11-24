@@ -59,9 +59,30 @@ export class AuthenticatedAxiosInstance {
   }
 
   private setupInterceptors() {
-    // Request interceptor - add token to every request
+    // Request interceptor - proactive refresh if we have only refresh token
     this.axiosInstance.interceptors.request.use(
-      (config: InternalAxiosRequestConfig) => {
+      async (config: InternalAxiosRequestConfig) => {
+        if (!this.accessToken) {
+          const refreshToken = this.getRefreshToken();
+          const canRefresh = !!(
+            refreshToken && this.props.authConfig?.refreshToken && !isRefreshing
+          );
+          if (canRefresh) {
+            try {
+              isRefreshing = true;
+              const tokens = await this.props.authConfig!.refreshToken!(
+                refreshToken!,
+                this.axiosInstance,
+              );
+              this.accessToken = tokens.accessToken;
+              this.setTokensInStore(tokens);
+            } catch (e) {
+              // Ignore; let request proceed and 401 handler will clean up.
+            } finally {
+              isRefreshing = false;
+            }
+          }
+        }
         if (this.accessToken && config.headers) {
           config.headers.Authorization = `Bearer ${this.accessToken}`;
         }
