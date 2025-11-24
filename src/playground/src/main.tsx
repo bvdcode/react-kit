@@ -15,37 +15,37 @@ const App = () => {
           en: enTranslations,
           ru: ruTranslations,
         }}
-        authConfig={{
-          usernamePattern: /^[a-zA-Z0-9._@-]+$/,
-          login: async (credentials, axiosInstance) => {
-            const response = await axiosInstance.post<TokenPair>(
-              "http://localhost:5182/api/v1/auth/login",
-              credentials,
-            );
-            return response.data;
-          },
-          getUserInfo: async (axiosInstance) => {
-            const response = await axiosInstance.get<UserInfo>(
-              "http://localhost:5182/api/v1/users/me",
-            );
-            return response.data;
-          },
-          refreshToken: async (refreshToken, axiosInstance) => {
-            const response = await axiosInstance.post<TokenPair>(
-              "http://localhost:5182/api/v1/auth/refresh",
-              { refreshToken },
-            );
-            return response.data;
-          },
-          logout: async (refreshToken, axiosInstance) => {
-            if (refreshToken) {
-              await axiosInstance.post(
-                "http://localhost:5182/api/v1/auth/revoke",
-                { refreshToken },
-              );
-            }
-          },
-        }}
+        // authConfig={{
+        //   usernamePattern: /^[a-zA-Z0-9._@-]+$/,
+        //   login: async (credentials, axiosInstance) => {
+        //     const response = await axiosInstance.post<TokenPair>(
+        //       "http://localhost:5182/api/v1/auth/login",
+        //       credentials,
+        //     );
+        //     return response.data;
+        //   },
+        //   getUserInfo: async (axiosInstance) => {
+        //     const response = await axiosInstance.get<UserInfo>(
+        //       "http://localhost:5182/api/v1/users/me",
+        //     );
+        //     return response.data;
+        //   },
+        //   refreshToken: async (refreshToken, axiosInstance) => {
+        //     const response = await axiosInstance.post<TokenPair>(
+        //       "http://localhost:5182/api/v1/auth/refresh",
+        //       { refreshToken },
+        //     );
+        //     return response.data;
+        //   },
+        //   logout: async (refreshToken, axiosInstance) => {
+        //     if (refreshToken) {
+        //       await axiosInstance.post(
+        //         "http://localhost:5182/api/v1/auth/revoke",
+        //         { refreshToken },
+        //       );
+        //     }
+        //   },
+        // }}
         pages={[
           {
             route: "/",
