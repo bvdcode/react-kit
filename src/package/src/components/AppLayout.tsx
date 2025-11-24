@@ -50,7 +50,15 @@ const AppLayout: FunctionComponent<ReactKitProps> = (props) => {
               >
                 <NavigationBar {...props} />
                 <Box component="main" sx={{ flex: 1, overflow: "auto", p: 3 }}>
-                  <Outlet />
+                  <Box
+                    sx={{
+                      maxWidth: props.contentMaxWidth ?? "100%",
+                      margin: "0 auto",
+                      width: "100%",
+                    }}
+                  >
+                    <Outlet />
+                  </Box>
                 </Box>
               </Box>
             }

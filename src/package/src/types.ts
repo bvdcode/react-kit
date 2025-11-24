@@ -16,6 +16,7 @@ export type ReactKitProps = {
   authConfig?: AuthConfig;
   translations?: TranslationResources;
   themeOverrides?: ThemeOverrides;
+  contentMaxWidth?: string | number;
 };
 
 export type ReactKitPage = {

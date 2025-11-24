@@ -11,6 +11,7 @@ const App = () => {
     <div>
       <AppShell
         appName="React Kit"
+        contentMaxWidth={1200}
         translations={{
           en: enTranslations,
           ru: ruTranslations,
@@ -57,11 +58,11 @@ const App = () => {
             route: "/long",
             name: "Long Content",
             component: (
-              <div>
+              <Box bgcolor="red">
                 {Array.from({ length: 100 }, (_, i) => (
                   <p key={i}>This is line {i + 1} of long content.</p>
                 ))}
-              </div>
+              </Box>
             ),
             icon: <div>🏠</div>,
           },
