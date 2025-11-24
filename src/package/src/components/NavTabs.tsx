@@ -13,8 +13,12 @@ export default function NavTabs({
   currentPath,
   onNavigate,
 }: NavTabsProps) {
-  const currentIndex = pages.findIndex((p) => p.route === currentPath);
-  if (!pages || pages.length <= 1) {
+  const displayedPages = pages.filter(
+    (p) => p.name !== undefined || isValidElement(p.icon),
+  );
+
+  const currentIndex = displayedPages.findIndex((p) => p.route === currentPath);
+  if (!displayedPages || displayedPages.length <= 1) {
     return <Box sx={{ minWidth: 0 }} />;
   }
 
@@ -28,12 +32,12 @@ export default function NavTabs({
         scrollButtons="auto"
         onChange={(_, value) => {
           if (value !== false) {
-            const page = pages[value];
+            const page = displayedPages[value];
             onNavigate(page.url ?? page.route);
           }
         }}
       >
-        {pages.map((page) => {
+        {displayedPages.map((page) => {
           const iconEl = isValidElement(page.icon) ? page.icon : undefined;
           const labelText = page.name || page.route;
 
