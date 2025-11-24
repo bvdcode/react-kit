@@ -1,11 +1,11 @@
-import { Box, Alert, AlertTitle } from "@mui/material";
 import { ReactKitProps } from "../types";
 import { FunctionComponent } from "react";
 import FaviconManager from "./FaviconManager";
+import { useTranslation } from "react-i18next";
+import { Box, Alert, AlertTitle } from "@mui/material";
 import defaultLogoUrl from "../assets/default-logo.svg";
 import { NavigationBar, NotFound, ProtectedContent } from ".";
 import { BrowserRouter, Route, Routes, Outlet } from "react-router-dom";
-import { useTranslation } from "react-i18next";
 
 const AppLayout: FunctionComponent<ReactKitProps> = (props) => {
   const { t } = useTranslation();
