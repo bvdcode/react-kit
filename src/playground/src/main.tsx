@@ -58,7 +58,13 @@ const App = () => {
             route: "/long",
             name: "Long Content",
             component: (
-              <Box bgcolor="red">
+              <Box
+                display="flex"
+                flexDirection="column"
+                width="100%"
+                height="100%"
+                bgcolor="red"
+              >
                 {Array.from({ length: 100 }, (_, i) => (
                   <p key={i}>This is line {i + 1} of long content.</p>
                 ))}

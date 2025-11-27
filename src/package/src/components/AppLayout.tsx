@@ -49,16 +49,36 @@ const AppLayout: FunctionComponent<ReactKitProps> = (props) => {
                 flexDirection="column"
               >
                 <NavigationBar {...props} />
-                <Box component="main" sx={{ flex: 1, overflow: "auto", p: 3 }}>
+                <Box
+                  component="main"
+                  sx={{
+                    flex: 1,
+                    minHeight: 0,
+                    display: "flex",
+                    flexDirection: "column",
+                  }}
+                >
                   <Box
                     sx={{
-                      maxWidth: props.contentMaxWidth ?? "100%",
-                      margin: "0 auto",
-                      width: "100%",
-                      height: "100%",
+                      flex: 1,
+                      overflow: "auto",
+                      p: 2,
+                      display: "flex",
+                      flexDirection: "column",
                     }}
                   >
-                    <Outlet />
+                    <Box
+                      sx={{
+                        maxWidth: props.contentMaxWidth ?? "100%",
+                        margin: "0 auto",
+                        width: "100%",
+                        flex: 1,
+                        display: "flex",
+                        flexDirection: "column",
+                      }}
+                    >
+                      <Outlet />
+                    </Box>
                   </Box>
                 </Box>
               </Box>
