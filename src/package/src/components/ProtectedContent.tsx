@@ -14,8 +14,8 @@ const ProtectedContent: React.FC<Props> = ({ children, appProps }) => {
   const apiService = useAuthStore((s) => s.apiService);
 
   if (!accessToken && !refreshToken) {
-    return appProps.customLoginPage ? (
-      <>{appProps.customLoginPage}</>
+    return appProps.renderLoginPage ? (
+      <>{appProps.renderLoginPage(appProps)}</>
     ) : (
       <LoginPage appProps={appProps} />
     );

@@ -17,8 +17,8 @@ export type ReactKitProps = {
   translations?: TranslationResources;
   themeOverrides?: ThemeOverrides;
   contentMaxWidth?: string | number;
-  customLoginPage?: ReactNode;
-  customNavigationBar?: ReactNode;
+  renderLoginPage?: (props: ReactKitProps) => ReactNode;
+  renderNavigationBar?: (props: ReactKitProps) => ReactNode;
 };
 
 export type ReactKitPage = {
