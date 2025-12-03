@@ -13,12 +13,17 @@ const ProtectedContent: React.FC<Props> = ({ children, appProps }) => {
   const refreshToken = useAuthStore((s) => s.refreshToken);
   const apiService = useAuthStore((s) => s.apiService);
 
-  // If no tokens - show login page
   if (!accessToken && !refreshToken) {
-    return <LoginPage appProps={appProps} />;
+    return appProps.customLoginPage ? (
+      <>{appProps.customLoginPage}</>
+    ) : (
+      <LoginPage appProps={appProps} />
+    );
   }
 
-  if (!apiService) return null;
+  if (!apiService) {
+    return null;
+  }
   return <AxiosProvider>{children}</AxiosProvider>;
 };
 

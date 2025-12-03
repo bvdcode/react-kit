@@ -17,6 +17,7 @@ export type ReactKitProps = {
   translations?: TranslationResources;
   themeOverrides?: ThemeOverrides;
   contentMaxWidth?: string | number;
+  customLoginPage?: ReactNode;
 };
 
 export type ReactKitPage = {
