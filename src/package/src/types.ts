@@ -18,6 +18,7 @@ export type ReactKitProps = {
   themeOverrides?: ThemeOverrides;
   contentMaxWidth?: string | number;
   customLoginPage?: ReactNode;
+  customNavigationBar?: ReactNode;
 };
 
 export type ReactKitPage = {

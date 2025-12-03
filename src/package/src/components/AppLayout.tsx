@@ -48,7 +48,7 @@ const AppLayout: FunctionComponent<ReactKitProps> = (props) => {
                 height="100%"
                 flexDirection="column"
               >
-                <NavigationBar {...props} />
+                {props.customNavigationBar ?? <NavigationBar {...props} />}
                 <Box
                   component="main"
                   sx={{
