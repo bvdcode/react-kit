@@ -30,14 +30,14 @@ jobs:
         with:
           dotnet-version: "8.x"
 
-      - uses: GitTools/actions/gitversion/setup@v4
+      - uses: GitTools/actions/gitversion/setup@v4.7.0
         with:
-          versionSpec: "6.x"
+          versionSpec: 6.8.2
 
       - id: gitversion
-        uses: GitTools/actions/gitversion/execute@v4
+        uses: GitTools/actions/gitversion/execute@v4.7.0
 
-      - run: npm version ${{ steps.gitversion.outputs.majorMinorPatch }} --no-git-tag-version
+      - run: npm version ${{ steps.gitversion.outputs.MajorMinorPatch }} --no-git-tag-version
         working-directory: ./src/package
       - run: npm ci
         working-directory: ./src/package
@@ -49,10 +49,10 @@ jobs:
       - run: |
           git config user.name "$GITHUB_ACTOR"
           git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
-          git tag v${{ steps.gitversion.outputs.majorMinorPatch  }}
-          git push origin v${{ steps.gitversion.outputs.majorMinorPatch }}
+          git tag v${{ steps.gitversion.outputs.MajorMinorPatch  }}
+          git push origin v${{ steps.gitversion.outputs.MajorMinorPatch }}
 
       - uses: softprops/action-gh-release@v2
         with:
-          tag_name: v${{ steps.gitversion.outputs.majorMinorPatch }}
+          tag_name: v${{ steps.gitversion.outputs.MajorMinorPatch }}
           generate_release_notes: true
